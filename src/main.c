@@ -15,7 +15,6 @@ int main()
     render_init();
     entity_init();
     bool run = true;
-    
     while(run){
         SDL_Event event;
         while(SDL_PollEvent(&event)){
@@ -27,6 +26,8 @@ int main()
         }
         entity_periodic();
         render_periodic();
+
+        delay(20);
     }
     
     return (0);
