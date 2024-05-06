@@ -14,19 +14,9 @@ void render_init(void){
 } 
 
 void render_periodic(void){
-    // SDL_Rect rect;
-    
-    // rect.x = 10;
-    // rect.y = 10;
-    // rect.h = 100;
-    // rect.w = 100;
-
     //clear the screen with black
     SDL_SetRenderDrawColor(global.rendering.renderer, 0, 0, 0, 255);
     SDL_RenderClear(global.rendering.renderer);
-
-    // SDL_SetRenderDrawColor(global.rendering.renderer, 255,0,0,255);
-    // SDL_RenderFillRect(global.rendering.renderer, &rect);
 
     //Draw the tiles first
     for(int i = 0; i < global.rendering.tile_list->len; i++){
