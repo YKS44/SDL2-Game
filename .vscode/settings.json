@@ -1,0 +1,12 @@
+{
+    "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+    "files.associations": {
+        "iostream": "c",
+        "stdlib.h": "c",
+        "stdbool.h": "c",
+        "atomic": "c",
+        "cstring": "c",
+        "rect.h": "c",
+        "types.h": "c"
+    }
+}
