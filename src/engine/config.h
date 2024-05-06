@@ -3,9 +3,12 @@
 #include "types.h"
 
 //window
-const u32 screen_width = 800;
-const u32 screen_height = 600;
+extern const u32 screen_width;
+extern const u32 screen_height;
 
-const u32 screen_pos_x = 30;
-const u32 screen_pos_y = 30;
-const char screen_title[] = "Title";
+extern const u32 screen_pos_x;
+extern const u32 screen_pos_y;
+extern const char screen_title[];
+
+//physics
+extern const i32 gravity;

@@ -9,7 +9,7 @@
 typedef struct{
     SDL_Window* window;
     SDL_Renderer* renderer;
-    ArrayList* entity_list;
+    ArrayList* render_entity_list;
     ArrayList* tile_list;
     //TODO: particle list, background list, etc
 } Rendering;

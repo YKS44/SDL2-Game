@@ -4,15 +4,18 @@
 
 #include "engine/global.h"
 #include "engine/render.h"
+#include "engine/entity.h"
 
 #include "engine/arraylist.h"
 #include "engine/types.h"
+#include "engine/util.h"
 
 int main()
 {
     render_init();
+    entity_init();
     bool run = true;
-
+    
     while(run){
         SDL_Event event;
         while(SDL_PollEvent(&event)){
@@ -22,7 +25,7 @@ int main()
                     break;
             }
         }
-
+        entity_periodic();
         render_periodic();
     }
     
