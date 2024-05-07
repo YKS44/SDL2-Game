@@ -17,7 +17,7 @@ Vec2 sub(Vec2 a, Vec2 b){
     return subtracted;
 }
 
-Vec2 mult(i32 scalar, Vec2 vector){
+Vec2 mult(f32 scalar, Vec2 vector){
     Vec2 multiplied;
 
     multiplied.x *= scalar;
