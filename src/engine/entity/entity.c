@@ -25,6 +25,13 @@ void entity_periodic(){
 
         ent->rect.pos.x += ent->vel.x;
         ent->rect.pos.y += ent->vel.y;
+
+        if(ent->rect.pos.x >= screen_width){
+            ent->vel.x *= -1;
+        }
+        if(ent->rect.pos.y >= screen_height){
+            ent->vel.y *= -1;
+        }
     }
 }
 

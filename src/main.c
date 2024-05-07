@@ -27,7 +27,7 @@ int main()
         entity_periodic();
         render_periodic();
 
-        delay(20);
+        SDL_Delay(10); //restrict the frame rate to 100fps
     }
     
     return (0);
