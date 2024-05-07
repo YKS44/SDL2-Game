@@ -7,6 +7,8 @@
         "atomic": "c",
         "cstring": "c",
         "rect.h": "c",
-        "types.h": "c"
+        "types.h": "c",
+        "time.h": "c",
+        "ctime": "c"
     }
 }

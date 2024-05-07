@@ -9,6 +9,6 @@ typedef struct{
 } ArrayList;
 
 ArrayList* arraylist_create(usize item_size);
-u32 arraylist_append(ArrayList* list, void* item);
+void*  arraylist_append(ArrayList* list, void* item);
 void* arraylist_get(ArrayList* list, u32 index);
 void arraylist_remove(ArrayList* list, u32 index);

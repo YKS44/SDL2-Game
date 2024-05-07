@@ -19,21 +19,21 @@ ArrayList* arraylist_create(usize item_size){
     return list;
 }
 
-//attempts to add an item to the list and returns its index
-u32 arraylist_append(ArrayList* list, void* item){
+//attempts to add an item to the list and returns its pointer
+void* arraylist_append(ArrayList* list, void* item){
     usize curretListByteSize = list->len * list->item_size;
 
     list->items = realloc(list->items, curretListByteSize + list->item_size);
 
     if(!list){
-        ERROR_RETURN(-1, "Could not allocate enough memory for ArrayList.\n");
+        ERROR_RETURN(NULL, "Could not allocate enough memory for ArrayList.\n");
     }
+    void* appendedPtr = list->items + list->item_size * list->len;
+    list->len++;
 
-    u32 appendedIndex = list->len++;
+    memcpy(appendedPtr, item, list->item_size);
 
-    memcpy(list->items + list->item_size * appendedIndex, item, list->item_size);
-
-    return appendedIndex;
+    return appendedPtr;
 }
 
 void* arraylist_get(ArrayList* list, u32 index){
@@ -42,6 +42,9 @@ void* arraylist_get(ArrayList* list, u32 index){
     }
 
     void* requestedIndexPtr = list->items + list->item_size * index;
+    if(!requestedIndexPtr){
+        ERROR_RETURN(NULL, "could not get array pointer");
+    }
     return requestedIndexPtr;
 }
 
