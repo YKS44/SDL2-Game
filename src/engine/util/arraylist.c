@@ -19,6 +19,32 @@ ArrayList* arraylist_create(usize item_size){
     return list;
 }
 
+ArrayList* arraylist_create_from_array(void* array, usize item_size, u32 len){
+    ArrayList* list = malloc(sizeof(ArrayList));
+
+    if(!list){
+        ERROR_RETURN(NULL, "Could not allocate enough memory for ArrayList.\n");
+    }
+
+    list->item_size = item_size;
+    list->len = len;
+    list->items = malloc(item_size * len);
+
+    if(!list){
+        ERROR_RETURN(NULL, "Could not allocate enough memory for ArrayList.\n");
+    }
+
+    for(int i = 0; i < len; i++){
+        void* array_item = array + item_size*i;
+        void* dest = list->items + item_size*i;
+
+        memcpy(dest, array_item, item_size);
+    }
+
+    return list;
+}
+
+
 //attempts to add an item to the list and returns its pointer
 void* arraylist_append(ArrayList* list, void* item){
     usize curretListByteSize = list->len * list->item_size;
@@ -43,7 +69,7 @@ void* arraylist_get(ArrayList* list, u32 index){
 
     void* requestedIndexPtr = list->items + list->item_size * index;
     if(!requestedIndexPtr){
-        ERROR_RETURN(NULL, "could not get array pointer");
+        ERROR_RETURN(NULL, "Could not get array pointer");
     }
     return requestedIndexPtr;
 }

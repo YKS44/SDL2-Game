@@ -15,28 +15,36 @@ u32 loop_delay = 0;
 
 int main()
 {
-    loop_delay = 1000 / frame_rate; //1000ms / set framerate
+    u32 nums[] = {1,2,3,4,5,6};
 
-    render_init();
-    entity_init();
+    ArrayList* list = arraylist_create_from_array(nums, sizeof(u32), sizeof(nums)/sizeof(nums[0]));
 
-    bool run = true;
-    while(run){
-        SDL_Event event;
-        while(SDL_PollEvent(&event)){
-            switch(event.type){
-                case SDL_QUIT:
-                    run = false;
-                    break;
-            }
-        }
-        entity_periodic();
-        render_periodic();
-
-        SDL_Delay(loop_delay); //restrict the frame rate to 100fps
+    for(int i = 0; i < list->len; i++){
+        printf("%u\n", *((u32*)arraylist_get(list, i)));
     }
-    SDL_DestroyWindow(global.rendering.window);
-    SDL_Quit();
+
+    // loop_delay = 1000 / frame_rate; //1000ms / set framerate
+
+    // render_init();
+    // entity_init();
+
+    // bool run = true;
+    // while(run){
+    //     SDL_Event event;
+    //     while(SDL_PollEvent(&event)){
+    //         switch(event.type){
+    //             case SDL_QUIT:
+    //                 run = false;
+    //                 break;
+    //         }
+    //     }
+    //     entity_periodic();
+    //     render_periodic();
+
+    //     SDL_Delay(loop_delay); //restrict the frame rate to 100fps
+    // }
+    // SDL_DestroyWindow(global.rendering.window);
+    // SDL_Quit();
 
     return (0);
 }

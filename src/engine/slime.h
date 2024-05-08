@@ -21,3 +21,7 @@ typedef struct Slime{
     ArrayList* lines;
 } Slime;
 
+extern Slime player;
+
+void slime_init();
+void slime_periodic();
