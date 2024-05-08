@@ -10,5 +10,8 @@ extern const u32 screen_pos_x;
 extern const u32 screen_pos_y;
 extern const char screen_title[];
 
+extern const u32 frame_rate;
+
 //physics
 extern const i32 gravity;
+
