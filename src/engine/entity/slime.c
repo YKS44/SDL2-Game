@@ -4,6 +4,7 @@
 #include "../util.h"
 #include "../vector.h"
 #include "../render.h"
+#include "../config.h"
 
 Slime player = {0};
 f32 elasticity = 1.0;
@@ -55,24 +56,29 @@ void slime_periodic(){
         if(point.locked) continue;
 
         Vec2 vel = vec2_sub(point.point,point.prevPoint);
-
+        vel.y += gravity;
         point.prevPoint = point.point;
         point.point = vec2_add(point.point,vel);
     }
 
     for(int i = 0; i < player.lines->len; i++){
         Line line = *((Line*)arraylist_get(player.lines,i));
-        Point p1 = *((Point*)arraylist_get(player.points, line.idx1));
-        Point p2 = *((Point*)arraylist_get(player.points, line.idx2));
+        Point* p1 = (Point*)arraylist_get(player.points, line.idx1);
+        Point* p2 = (Point*)arraylist_get(player.points, line.idx2);
 
-        Vec2 midPt = vec2_add(p1.point,p2.point);
+        Vec2 midPt = vec2_add(p1->point,p2->point);
         midPt = vec2_mult(midPt, 0.5);
 
-        Vec2 dir = vec2_normalized(vec2_sub(p1.point,midPt));
+        Vec2 dir = vec2_normalized(vec2_sub(p1->point,midPt));
 
-        u32 dist = (u32) hypot(p2.point.x-p1.point.x, p2.point.y-p1.point.y);
+        u32 dist = (u32) hypot(p2->point.x-p1->point.x, p2->point.y-p1->point.y);
 
-        Vec2 goal = vec2_mult(dir, line.length);
+        Vec2 goal = vec2_mult(dir, line.length/2);
+        Vec2 diff = vec2_sub(goal,vec2_mult(dir,(line.length-dist)/2 * elasticity));
         
-    }    
+        p1->point = vec2_add(p1->point,diff);
+        p2->point = vec2_sub(p2->point, diff);
+    }
+
+
 }

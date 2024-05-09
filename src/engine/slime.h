@@ -22,6 +22,8 @@ typedef struct Slime{
 } Slime;
 
 extern Slime player;
+
+//Ranges from (0,1]. 1 is more snappy
 extern const f32 elasticity;
 
 void slime_init();
