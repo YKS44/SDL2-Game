@@ -3,8 +3,8 @@
 #include "types.h"
 
 typedef struct {
-    i32 x;
-    i32 y;
+    f32 x;
+    f32 y;
 } Vec2;
 
 Vec2 vec2_add(Vec2 a, Vec2 b);

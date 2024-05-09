@@ -11,9 +11,11 @@ Slime player = {0};
 const f32 elasticity = 1.0;
 
 void slime_init(){
-    u32 scale = 10;
-    i32 pts[6][2] = {{0,0},{2,0},{0,-2},{2,-2},{1,-3},{1,1}};
-    u32 connections[8][2] = {{0,1},{0,2},{0,5},{1,3},{1,5},{2,3},{2,4},{3,4}};
+    u32 scale = 50;
+    // i32 pts[6][2] = {{0,0},{2,0},{0,-2},{2,-2},{1,-3},{1,1}};
+    // u32 connections[8][2] = {{0,1},{0,2},{0,5},{1,3},{1,5},{2,3},{2,4},{3,4}};
+    i32 pts [2][2] = {{0,0}, {0,-1}};
+    u32 connections[1][2] = {{0,1}};
 
     ArrayList* points = arraylist_create(sizeof(Point));
     ArrayList* lines = arraylist_create(sizeof(Line));
@@ -26,12 +28,17 @@ void slime_init(){
         point.prevPoint.x = point.point.x;
         point.prevPoint.y = point.point.y;
 
-        if(i == 5){
+        // if(i == 5){
+        //     point.locked = true;
+        // }else{
+        //     point.locked = false;
+        // }
+        if(i == 0){
             point.locked = true;
         }else{
             point.locked = false;
         }
-        arraylist_append(points, pts[i]);
+        arraylist_append(points, &point);
     }
 
     for(int i = 0; i < sizeof(connections)/sizeof(connections[0]); i++){
@@ -44,25 +51,29 @@ void slime_init(){
 
         u32 dist = (u32) hypot(p2.x-p1.x, p2.y-p1.y);
         line.length = dist;
+
+        arraylist_append(lines, &line);
     }
 
     player.lines = lines;
     player.points = points;
+
 }
 
 void slime_periodic(){
     for(int i = 0; i < player.points->len; i++){
-        Point point = *((Point*)arraylist_get(player.points,i));
+        Point* point = (Point*)arraylist_get(player.points,i);
 
-        if(point.locked) {
-            point.point.x = global.mouseX;
-            point.point.y = global.mouseY;
+        if(point->locked) {
+            point->point.x = global.mouseX;
+            point->point.y = global.mouseY;
+            continue;
         }
 
-        Vec2 vel = vec2_sub(point.point,point.prevPoint);
-        vel.y += gravity;
-        point.prevPoint = point.point;
-        point.point = vec2_add(point.point,vel);
+        Vec2 vel = vec2_sub(point->point,point->prevPoint);
+        // vel.y += gravity;
+        point->prevPoint = point->point;
+        // point->point = vec2_add(point->point,vel);
     }
 
     for(int i = 0; i < player.lines->len; i++){
@@ -70,33 +81,31 @@ void slime_periodic(){
         Point* p1 = (Point*)arraylist_get(player.points, line.idx1);
         Point* p2 = (Point*)arraylist_get(player.points, line.idx2);
 
-        Vec2 midPt = vec2_add(p1->point,p2->point);
-        midPt = vec2_mult(midPt, 0.5);
+        Vec2 dir = vec2_normalized(vec2_sub(p1->point,p2->point));
 
-        Vec2 dir = vec2_normalized(vec2_sub(p1->point,midPt));
+        f32 dist = hypot(p2->point.x-p1->point.x, p2->point.y-p1->point.y);
 
-        u32 dist = (u32) hypot(p2->point.x-p1->point.x, p2->point.y-p1->point.y);
-
-        Vec2 goal = vec2_mult(dir, line.length/2);
-        Vec2 diff = vec2_sub(goal,vec2_mult(dir,(line.length-dist)/2 * elasticity));
+        Vec2 vel = vec2_mult(dir, (line.length-dist)/2 * elasticity);
         
+        printf("%fdist\n",dist);
+
         if(!p1->locked){
-            p1->point = vec2_add(p1->point,diff);
+            p1->point = vec2_add(p1->point,vel);
         }
         if(!p2->locked){
-            p2->point = vec2_sub(p2->point, diff);
+            p2->point = vec2_sub(p2->point, vel);
         }
     }
 
     SDL_SetRenderDrawColor(global.rendering.renderer, 0, 0, 0, 255);
     SDL_RenderClear(global.rendering.renderer);
     for(int i = 0; i < player.lines->len; i++){
-        SDL_SetRenderDrawColor(global.rendering.renderer, 255,255,255,255);
         Line line = *((Line*)arraylist_get(player.lines,i));
         Point p1 = *((Point*)arraylist_get(player.points, line.idx1));
         Point p2 = *((Point*)arraylist_get(player.points, line.idx2));
-        printf("rendering\n");
-        printf("%d,%d\n", global.mouseX, global.mouseY);
+
+        // printf("please%f,%f\n",p1.point.x,p1.point.y);
+        SDL_SetRenderDrawColor(global.rendering.renderer, 255,255,255,255);
         SDL_RenderDrawLine(global.rendering.renderer, p1.point.x, -p1.point.y+screen_height, p2.point.x, -p2.point.y+screen_height);
     }
     SDL_RenderPresent(global.rendering.renderer);

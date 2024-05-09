@@ -20,9 +20,10 @@ int main()
 
     render_init();
     slime_init();
-    // entity_init();
+    entity_init();
 
     bool run = true;
+
     while(run){
         SDL_Event event;
         while(SDL_PollEvent(&event)){
@@ -34,9 +35,9 @@ int main()
         }
         SDL_GetMouseState(&global.mouseX, &global.mouseY);
         global.mouseY = -global.mouseY + screen_height;
-        // entity_periodic();
-        // render_periodic();
-        slime_periodic();
+        entity_periodic();
+        render_periodic();
+        // slime_periodic();
 
         SDL_Delay(loop_delay); //restrict the frame rate to 100fps //TODO don't do the delay if the frame rate is already low because of calculations
     }
