@@ -1,7 +1,7 @@
 #include "../vector.h"
 #include <math.h>
 
-Vec2 add(Vec2 a, Vec2 b){
+Vec2 vec2_add(Vec2 a, Vec2 b){
     Vec2 added;
     added.x = a.x + b.x;
     added.y = a.y + b.y;
@@ -9,7 +9,7 @@ Vec2 add(Vec2 a, Vec2 b){
     return added;
 }
 
-Vec2 sub(Vec2 a, Vec2 b){
+Vec2 vec2_sub(Vec2 a, Vec2 b){
     Vec2 subtracted;
     subtracted.x = a.x - b.x;
     subtracted.y = a.y - b.y;
@@ -17,7 +17,7 @@ Vec2 sub(Vec2 a, Vec2 b){
     return subtracted;
 }
 
-Vec2 mult(f32 scalar, Vec2 vector){
+Vec2 vec2_mult(Vec2 vector, f32 scalar){
     Vec2 multiplied;
 
     multiplied.x *= scalar;
@@ -26,7 +26,14 @@ Vec2 mult(f32 scalar, Vec2 vector){
     return multiplied;
 }
 
-f32 get_angle(Vec2 vector){
+Vec2 vec2_normalized(Vec2 vector){
+    f32 magnitude = hypot(vector.x, vector.y);
+    vector = vec2_mult(vector,1/magnitude);
+    
+    return vector;
+}
+
+f32 vec2_get_angle(Vec2 vector){
     f32 angle = atan2(vector.y, vector.x);
 
     return angle;

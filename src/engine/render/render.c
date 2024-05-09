@@ -19,7 +19,7 @@ void render_periodic(void){
     SDL_SetRenderDrawColor(global.rendering.renderer, 0, 0, 0, 255);
     SDL_RenderClear(global.rendering.renderer);
 
-    // //Draw the tiles first
+    //Draw the tiles first
     for(int i = 0; i < global.rendering.tile_list->len; i++){
         RenderData render_data = *((RenderData*) arraylist_get(global.rendering.tile_list, i));
         SDL_Rect rect;

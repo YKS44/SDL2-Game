@@ -1,7 +1,7 @@
 #pragma once
 
-#include "vector.h"
 #include <stdbool.h>
+#include "vector.h"
 #include "arraylist.h"
 
 typedef struct {
@@ -22,6 +22,7 @@ typedef struct Slime{
 } Slime;
 
 extern Slime player;
+extern const f32 elasticity;
 
 void slime_init();
 void slime_periodic();
