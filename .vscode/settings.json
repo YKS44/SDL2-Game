@@ -10,6 +10,7 @@
         "types.h": "c",
         "time.h": "c",
         "ctime": "c",
-        "util.h": "c"
+        "util.h": "c",
+        "arraylist.h": "c"
     }
 }

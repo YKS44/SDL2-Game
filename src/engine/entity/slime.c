@@ -11,33 +11,30 @@ Slime player = {0};
 const f32 elasticity = 1.0;
 
 void slime_init(){
-    u32 scale = 50;
-    // i32 pts[6][2] = {{0,0},{2,0},{0,-2},{2,-2},{1,-3},{1,1}};
-    // u32 connections[8][2] = {{0,1},{0,2},{0,5},{1,3},{1,5},{2,3},{2,4},{3,4}};
-    i32 pts [2][2] = {{0,0}, {0,-1}};
-    u32 connections[1][2] = {{0,1}};
+    i32 scale = 50;
+    i32 pts[6][2] = {{0,0},{2,0},{0,-2},{2,-2},{1,-3},{1,1}};
+    u32 connections[8][2] = {{0,1},{0,2},{0,5},{1,3},{1,5},{2,3},{2,4},{3,4}};
+    // i32 pts [2][2] = {{0,0}, {0,-1}};
+    // u32 connections[1][2] = {{0,1}};
 
     ArrayList* points = arraylist_create(sizeof(Point));
     ArrayList* lines = arraylist_create(sizeof(Line));
 
     for(int i = 0; i < sizeof(pts)/sizeof(pts[0]); i++){
         Point point;
+
         point.point.x = pts[i][0] * scale;
         point.point.y = pts[i][1] * scale;
-        
+
         point.prevPoint.x = point.point.x;
         point.prevPoint.y = point.point.y;
 
-        // if(i == 5){
-        //     point.locked = true;
-        // }else{
-        //     point.locked = false;
-        // }
-        if(i == 0){
+        if(i == 5){
             point.locked = true;
         }else{
             point.locked = false;
         }
+        
         arraylist_append(points, &point);
     }
 
@@ -46,10 +43,13 @@ void slime_init(){
         line.idx1 = connections[i][0];
         line.idx2 = connections[i][1];
 
-        Vec2 p1 = *((Vec2*)arraylist_get(points, line.idx1));
+        Vec2 p1 = *((Vec2*)arraylist_get(points,line.idx1));
         Vec2 p2 = *((Vec2*)arraylist_get(points,line.idx2));
 
-        u32 dist = (u32) hypot(p2.x-p1.x, p2.y-p1.y);
+        printf("p1%f,%f\n",p1.x,p1.y);
+        printf("p2%f,%f\n",p2.x,p2.y);
+
+        f32 dist = hypot(p2.x-p1.x, p2.y-p1.y);
         line.length = dist;
 
         arraylist_append(lines, &line);
@@ -71,9 +71,9 @@ void slime_periodic(){
         }
 
         Vec2 vel = vec2_sub(point->point,point->prevPoint);
-        // vel.y += gravity;
+        vel.y += gravity;
         point->prevPoint = point->point;
-        // point->point = vec2_add(point->point,vel);
+        point->point = vec2_add(point->point,vel);
     }
 
     for(int i = 0; i < player.lines->len; i++){
@@ -87,8 +87,6 @@ void slime_periodic(){
 
         Vec2 vel = vec2_mult(dir, (line.length-dist)/2 * elasticity);
         
-        printf("%fdist\n",dist);
-
         if(!p1->locked){
             p1->point = vec2_add(p1->point,vel);
         }
@@ -99,12 +97,12 @@ void slime_periodic(){
 
     SDL_SetRenderDrawColor(global.rendering.renderer, 0, 0, 0, 255);
     SDL_RenderClear(global.rendering.renderer);
+    printf("%u\n",player.lines->len);
     for(int i = 0; i < player.lines->len; i++){
         Line line = *((Line*)arraylist_get(player.lines,i));
         Point p1 = *((Point*)arraylist_get(player.points, line.idx1));
         Point p2 = *((Point*)arraylist_get(player.points, line.idx2));
 
-        // printf("please%f,%f\n",p1.point.x,p1.point.y);
         SDL_SetRenderDrawColor(global.rendering.renderer, 255,255,255,255);
         SDL_RenderDrawLine(global.rendering.renderer, p1.point.x, -p1.point.y+screen_height, p2.point.x, -p2.point.y+screen_height);
     }
