@@ -9,6 +9,8 @@
         "rect.h": "c",
         "types.h": "c",
         "time.h": "c",
-        "ctime": "c"
+        "ctime": "c",
+        "util.h": "c",
+        "arraylist.h": "c"
     }
 }

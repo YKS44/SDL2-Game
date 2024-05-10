@@ -22,14 +22,14 @@ void entity_init(){
 void entity_periodic(){
     for(int i = 0; i < entity_list->len; i++){
         Entity* ent = (Entity*) arraylist_get(entity_list, i);
-
+        
         ent->rect.pos.x += ent->vel.x;
         ent->rect.pos.y += ent->vel.y;
 
-        if(ent->rect.pos.x >= screen_width){
+        if(ent->rect.pos.x <= 0 || ent->rect.pos.x >= screen_width){ //TODO remove later. made it just for fun
             ent->vel.x *= -1;
         }
-        if(ent->rect.pos.y >= screen_height){
+        if(ent->rect.pos.y <= 0 || ent->rect.pos.y >= screen_height){
             ent->vel.y *= -1;
         }
     }
@@ -42,10 +42,10 @@ Entity* entity_add(Entity ent){
 }
 
 void entity_print_info(Entity ent){
-    printf("X: %d\n", ent.rect.pos.x);
-    printf("Y: %d\n", ent.rect.pos.y);
+    printf("X: %f\n", ent.rect.pos.x);
+    printf("Y: %f\n", ent.rect.pos.y);
     printf("W: %u\n", ent.rect.w);
     printf("H: %u\n", ent.rect.h);
-    printf("VX: %d\n", ent.vel.x);
-    printf("VY: %d\n", ent.vel.y);
+    printf("VX: %f\n", ent.vel.x);
+    printf("VY: %f\n", ent.vel.y);
 }

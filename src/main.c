@@ -9,12 +9,22 @@
 #include "engine/arraylist.h"
 #include "engine/types.h"
 #include "engine/util.h"
+#include "engine/config.h"
+#include "engine/slime.h"
+
+u32 loop_delay = 0;
 
 int main()
 {
+    loop_delay = 1000 / frame_rate; //1000ms / set framerate
+
     render_init();
+    slime_init();
     entity_init();
+
     bool run = true;
+    Point* lockPoint = (Point*)arraylist_get(player.points, 5);
+
     while(run){
         SDL_Event event;
         while(SDL_PollEvent(&event)){
@@ -22,13 +32,24 @@ int main()
                 case SDL_QUIT:
                     run = false;
                     break;
+                case SDL_MOUSEBUTTONDOWN:
+                    lockPoint->locked = true;
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    lockPoint->locked = false;
+                    break;
             }
         }
-        entity_periodic();
-        render_periodic();
+        SDL_GetMouseState(&global.mouseX, &global.mouseY);
+        global.mouseY = -global.mouseY + screen_height;
+        // entity_periodic();
+        // render_periodic();
+        slime_periodic();
 
-        SDL_Delay(10); //restrict the frame rate to 100fps
+        SDL_Delay(loop_delay); //restrict the frame rate to 100fps //TODO don't do the delay if the frame rate is already low because of calculations
     }
-    
+    SDL_DestroyWindow(global.rendering.window);
+    SDL_Quit();
+
     return (0);
 }
