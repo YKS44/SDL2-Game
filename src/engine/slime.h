@@ -1,13 +1,11 @@
 #pragma once
 
-#include <stdbool.h>
 #include "vector.h"
 #include "arraylist.h"
 
 typedef struct {
     Vec2 point;
     Vec2 prevPoint;
-    bool locked;
 } Point;
 
 typedef struct {
@@ -19,12 +17,9 @@ typedef struct {
 typedef struct {
     ArrayList* points;
     ArrayList* lines;
+    f32 elasticity;
 } Slime;
 
-extern Slime player;
-
-//Ranges from (0,1]. 1 is more snappy
-extern const f32 elasticity;
-
-void slime_init();
-void slime_periodic();
+void slime_update(Slime* slime);
+void slime_destroy(Slime* slime);
+Slime* slime_create(i32 pts[][2], u32 connections[][2], i32 scale, f32 elasticity);

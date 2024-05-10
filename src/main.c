@@ -44,7 +44,6 @@ int main()
         time_periodic();
         entity_periodic();
         render_periodic();
-        slime_periodic();
 
         f32 delay = (f32)TIME.loopDelay - (TIME.deltaTime*1000.0);
         if(delay > 0){ //only add a delay if delta time is less than the loop delay. This way, the delay is not called when the framerate is already lower than the target framerate.
