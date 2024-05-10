@@ -1,5 +1,5 @@
-#include "util.h"
-#include "types.h"
+#include "../util.h"
+#include "../types.h"
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>

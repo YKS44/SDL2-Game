@@ -2,35 +2,48 @@
 #include "../global.h"
 #include "../util.h"
 #include "../config.h"
+#include "../timer.h"
+#include "../rect_ent.h"
 
 ArrayList* entity_list = NULL;
 void entity_init(){
     entity_list = arraylist_create(sizeof(Entity));
-    for(int i = 0; i < 50; i++){
+    for(int i = 0; i < 10; i++){
         Entity ent;
-        ent.rect.pos.x = random_range(0, screen_width);
-        ent.rect.pos.y = random_range(0,screen_height);
-        ent.rect.w = random_range(10,50);
-        ent.rect.h = random_range(10,50);
-        ent.vel.x = random_range(-3,3);
-        ent.vel.y = random_range(-3,3);
+        ent.type = RectType;
+
+        ent.RECT_ENT.rect.pos.x = random_range(0, screen_width);
+        ent.RECT_ENT.rect.pos.y = random_range(0,screen_height);
+        ent.RECT_ENT.rect.w = random_range(10,50);
+        ent.RECT_ENT.rect.h = random_range(10,50);
+        ent.RECT_ENT.vel.x = random_range(-100,100);
+        ent.RECT_ENT.vel.y = random_range(-100,100);
 
         entity_add(ent);
     }
+
+    i32 pts[6][2] = {{0,0},{2,0},{0,-2},{2,-2},{1,-3},{1,1}};
+    u32 connections[10][2] = {{0,1},{0,2},{0,5},{1,3},{1,5},{2,3},{2,4},{3,4} ,{0,3},{1,2}};
+
+    Slime slime = slime_create(pts, sizeof(pts)/sizeof(pts[0]), connections, sizeof(connections)/sizeof(connections[0]), 50, 0.5);
+    Entity sl;
+    sl.type = SlimeType;
+    sl.u.slimeEntity = slime;
+    entity_add(sl);
 }
 
 void entity_periodic(){
     for(int i = 0; i < entity_list->len; i++){
         Entity* ent = (Entity*) arraylist_get(entity_list, i);
         
-        ent->rect.pos.x += ent->vel.x;
-        ent->rect.pos.y += ent->vel.y;
+        switch(ent->type){
+            case RectType:
+                rect_ent_update(&(ent->u.rectEntity));
+                break;
 
-        if(ent->rect.pos.x <= 0 || ent->rect.pos.x >= screen_width){ //TODO remove later. made it just for fun
-            ent->vel.x *= -1;
-        }
-        if(ent->rect.pos.y <= 0 || ent->rect.pos.y >= screen_height){
-            ent->vel.y *= -1;
+            case SlimeType:
+                slime_update(&(ent->u.slimeEntity));
+                break;
         }
     }
 }
@@ -42,10 +55,10 @@ Entity* entity_add(Entity ent){
 }
 
 void entity_print_info(Entity ent){
-    printf("X: %f\n", ent.rect.pos.x);
-    printf("Y: %f\n", ent.rect.pos.y);
-    printf("W: %u\n", ent.rect.w);
-    printf("H: %u\n", ent.rect.h);
-    printf("VX: %f\n", ent.vel.x);
-    printf("VY: %f\n", ent.vel.y);
+    // printf("X: %f\n", ent.rect.pos.x);
+    // printf("Y: %f\n", ent.rect.pos.y);
+    // printf("W: %u\n", ent.rect.w);
+    // printf("H: %u\n", ent.rect.h);
+    // printf("VX: %f\n", ent.vel.x);
+    // printf("VY: %f\n", ent.vel.y);
 }
