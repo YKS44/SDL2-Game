@@ -36,17 +36,17 @@ void render_periodic(void){
 
     // //Then draw the entities on top of it
     for(int i = 0; i < entity_list->len; i++){
-        Entity render_data = *((Entity*) arraylist_get(entity_list, i));
-        SDL_Rect rect;
-        rect.x = render_data.rect.pos.x;
-        rect.y = render_data.rect.pos.y;
-        rect.w = render_data.rect.w;
-        rect.h = render_data.rect.h;
+        Entity entity = *((Entity*) arraylist_get(entity_list, i));
+        
+        switch(entity.type){
+            case RectType:
+                rect_ent_render(entity.u.rectEntity);
+                break;
 
-        rect.y = -rect.y + screen_height; //since the origin of the screen coordinate system is in the top left, I flip signs for the y and subtract by the height of the screen to make bottom left the origin.
-
-        SDL_SetRenderDrawColor(global.rendering.renderer, 255, 0, 0, 255);
-        SDL_RenderFillRect(global.rendering.renderer, &rect);
+            case SlimeType:
+                slime_render(entity.u.slimeEntity);
+                break;
+        }
     }
 
     //actually update the screen
