@@ -11,6 +11,8 @@
         "time.h": "c",
         "ctime": "c",
         "util.h": "c",
-        "arraylist.h": "c"
+        "arraylist.h": "c",
+        "global.h": "c",
+        "render.h": "c"
     }
 }

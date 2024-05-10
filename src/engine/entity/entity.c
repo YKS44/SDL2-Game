@@ -2,6 +2,7 @@
 #include "../global.h"
 #include "../util.h"
 #include "../config.h"
+#include "../timer.h"
 
 ArrayList* entity_list = NULL;
 void entity_init(){

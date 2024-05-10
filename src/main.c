@@ -11,19 +11,17 @@
 #include "engine/util.h"
 #include "engine/config.h"
 #include "engine/slime.h"
-
-u32 loop_delay = 0;
+#include "engine/timer.h"
 
 int main()
 {
-    loop_delay = 1000 / frame_rate; //1000ms / set framerate
-
     render_init();
     slime_init();
     entity_init();
+    time_init();
 
     bool run = true;
-    Point* lockPoint = (Point*)arraylist_get(player.points, 5);
+    Point* lockPoint = (Point*)arraylist_get(player.points, 5); //TODO remove later. just for testing
 
     while(run){
         SDL_Event event;
@@ -42,11 +40,16 @@ int main()
         }
         SDL_GetMouseState(&global.mouseX, &global.mouseY);
         global.mouseY = -global.mouseY + screen_height;
-        // entity_periodic();
-        // render_periodic();
+
+        time_periodic();
+        entity_periodic();
+        render_periodic();
         slime_periodic();
 
-        SDL_Delay(loop_delay); //restrict the frame rate to 100fps //TODO don't do the delay if the frame rate is already low because of calculations
+        if(TIME.deltaTime < TIME.loopDelay/1000){ //only add a delay if delta time is less than the loop delay. This way, the delay is not called when the framerate is already lower than the target framerate.
+            printf("delayed%f\n",TIME.deltaTime);
+            SDL_Delay(TIME.loopDelay); //restrict the frame rate to 100fps //TODO don't do the delay if the frame rate is already low because of calculations
+        }
     }
     SDL_DestroyWindow(global.rendering.window);
     SDL_Quit();

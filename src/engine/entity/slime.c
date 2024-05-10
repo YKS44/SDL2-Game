@@ -29,11 +29,11 @@ void slime_init(){
         point.prevPoint.x = point.point.x;
         point.prevPoint.y = point.point.y;
 
-        // if(i == 5){
-        //     point.locked = true;
-        // }else{
-        //     point.locked = false;
-        // }
+        if(i == 5){
+            point.locked = true;
+        }else{
+            point.locked = false;
+        }
         
         arraylist_append(points, &point);
     }
@@ -82,7 +82,7 @@ void slime_periodic(){
         // printf("after\n");
         // vec2_print(point->point);
         // printf("\n");
-        point->point = vec2_add(point->point,vel);
+        // point->point = vec2_add(point->point,vel);
 
         if(point->point.y < 0){
             point->point.y = 0;
