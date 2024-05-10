@@ -23,6 +23,7 @@ int main()
     entity_init();
 
     bool run = true;
+    Point* lockPoint = (Point*)arraylist_get(player.points, 5);
 
     while(run){
         SDL_Event event;
@@ -30,6 +31,12 @@ int main()
             switch(event.type){
                 case SDL_QUIT:
                     run = false;
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    lockPoint->locked = true;
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    lockPoint->locked = false;
                     break;
             }
         }

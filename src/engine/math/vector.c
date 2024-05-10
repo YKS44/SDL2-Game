@@ -31,6 +31,10 @@ Vec2 vec2_normalized(Vec2 vector){
     return vector;
 }
 
+void vec2_print(Vec2 vector){
+    printf("<%f,%f>\n",vector.x,vector.y);
+}
+
 f32 vec2_get_angle(Vec2 vector){
     f32 angle = atan2(vector.y, vector.x);
 

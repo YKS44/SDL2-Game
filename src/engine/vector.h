@@ -14,3 +14,5 @@ Vec2 vec2_normalized(Vec2 vector);
 
 //Returns the angle of the vector in radians.
 f32 vec2_get_angle(Vec2 vector);
+
+void vec2_print(Vec2 vector);

@@ -16,7 +16,7 @@ typedef struct {
     u32 length;
 } Line;
 
-typedef struct Slime{
+typedef struct {
     ArrayList* points;
     ArrayList* lines;
 } Slime;
