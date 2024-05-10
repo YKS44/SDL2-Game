@@ -16,12 +16,10 @@
 int main()
 {
     render_init();
-    slime_init();
     entity_init();
     time_init();
 
     bool run = true;
-    Point* lockPoint = (Point*)arraylist_get(player.points, 5); //TODO remove later. just for testing
 
     while(run){
         SDL_Event event;
@@ -29,12 +27,6 @@ int main()
             switch(event.type){
                 case SDL_QUIT:
                     run = false;
-                    break;
-                case SDL_MOUSEBUTTONDOWN:
-                    lockPoint->locked = true;
-                    break;
-                case SDL_MOUSEBUTTONUP:
-                    lockPoint->locked = false;
                     break;
             }
         }

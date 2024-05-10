@@ -2,6 +2,7 @@
 
 #include "vector.h"
 #include "arraylist.h"
+#include <stdbool.h>
 
 typedef struct {
     Vec2 point;
@@ -23,4 +24,4 @@ typedef struct {
 void slime_update(Slime* slime);
 void slime_destroy(Slime* slime);
 void slime_render(Slime slime);
-Slime* slime_create(i32 pts[][2], u32 connections[][2], i32 scale, f32 elasticity);
+Slime slime_create(i32 pts[][2], usize numPts, u32 connections[][2], usize numCon, i32 scale, f32 elasticity);

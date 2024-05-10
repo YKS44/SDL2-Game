@@ -7,13 +7,13 @@
 #include "../config.h"
 #include "../global.h"
 
-Slime* slime_create(i32 pts[][2], u32 connections[][2], i32 scale, f32 elasticity){
+Slime slime_create(i32 pts[][2], usize numPts, u32 connections[][2], usize numCon, i32 scale, f32 elasticity){
     Slime slime;
 
     ArrayList* points = arraylist_create(sizeof(Point));
     ArrayList* lines = arraylist_create(sizeof(Line));
 
-    for(int i = 0; i < sizeof(pts)/sizeof(pts[0]); i++){
+    for(int i = 0; i < numPts; i++){
         Point point;
 
         point.point.x = pts[i][0] * scale;
@@ -25,7 +25,7 @@ Slime* slime_create(i32 pts[][2], u32 connections[][2], i32 scale, f32 elasticit
         arraylist_append(points, &point);
     }
 
-    for(int i = 0; i < sizeof(connections)/sizeof(connections[0]); i++){
+    for(int i = 0; i < numCon; i++){
         Line line;
         line.idx1 = connections[i][0];
         line.idx2 = connections[i][1];
@@ -43,7 +43,7 @@ Slime* slime_create(i32 pts[][2], u32 connections[][2], i32 scale, f32 elasticit
     slime.points = points;
     slime.elasticity = elasticity;
 
-    return &slime;
+    return slime;
 }
 
 void slime_update(Slime* slime){
