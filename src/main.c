@@ -44,11 +44,11 @@ int main()
         time_periodic();
         entity_periodic();
         render_periodic();
-        // slime_periodic();
+        slime_periodic();
 
-        if(TIME.loopDelay - TIME.deltaTime > 0){ //only add a delay if delta time is less than the loop delay. This way, the delay is not called when the framerate is already lower than the target framerate.
-            printf("delayed%f\n",TIME.deltaTime);
-            SDL_Delay(TIME.loopDelay - TIME.deltaTime); //restrict the frame rate to 100fps //TODO don't do the delay if the frame rate is already low because of calculations
+        f32 delay = (f32)TIME.loopDelay - (TIME.deltaTime*1000.0);
+        if(delay > 0){ //only add a delay if delta time is less than the loop delay. This way, the delay is not called when the framerate is already lower than the target framerate.
+            SDL_Delay(delay); //restrict the frame rate to 100fps //TODO don't do the delay if the frame rate is already low because of calculations
         }
     }
     SDL_DestroyWindow(global.rendering.window);
