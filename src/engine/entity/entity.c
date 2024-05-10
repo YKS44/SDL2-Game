@@ -13,8 +13,8 @@ void entity_init(){
         ent.rect.pos.y = random_range(0,screen_height);
         ent.rect.w = random_range(10,50);
         ent.rect.h = random_range(10,50);
-        ent.vel.x = random_range(-3,3);
-        ent.vel.y = random_range(-3,3);
+        ent.vel.x = random_range(-100,100);
+        ent.vel.y = random_range(-100,100);
 
         entity_add(ent);
     }
@@ -24,8 +24,8 @@ void entity_periodic(){
     for(int i = 0; i < entity_list->len; i++){
         Entity* ent = (Entity*) arraylist_get(entity_list, i);
         
-        ent->rect.pos.x += ent->vel.x;
-        ent->rect.pos.y += ent->vel.y;
+        ent->rect.pos.x += ent->vel.x * TIME.deltaTime;
+        ent->rect.pos.y += ent->vel.y * TIME.deltaTime;
 
         if(ent->rect.pos.x <= 0 || ent->rect.pos.x >= screen_width){ //TODO remove later. made it just for fun
             ent->vel.x *= -1;
