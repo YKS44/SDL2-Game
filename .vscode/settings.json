@@ -13,6 +13,7 @@
         "util.h": "c",
         "arraylist.h": "c",
         "global.h": "c",
-        "render.h": "c"
+        "render.h": "c",
+        "rect_ent.h": "c"
     }
 }

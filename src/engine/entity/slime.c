@@ -64,28 +64,28 @@ void slime_update(Slime* slime){
 
     }
 
-    for(int i = 0; i < slime->lines.len; i++){
+    for(int i = 0; i < slime->lines->len; i++){
         Line line = *((Line*)arraylist_get(slime->lines,i));
-        Point* p1 = (Point*)arraylist_get(slime.points, line.idx1);
-        Point* p2 = (Point*)arraylist_get(slime.points, line.idx2);
+        Point* p1 = (Point*)arraylist_get(slime->points, line.idx1);
+        Point* p2 = (Point*)arraylist_get(slime->points, line.idx2);
 
         Vec2 dir = vec2_normalized(vec2_sub(p1->point,p2->point));
 
         f32 dist = hypot(p2->point.x-p1->point.x, p2->point.y-p1->point.y);
 
-        Vec2 vel = vec2_mult(dir, (line.length-dist)/2 * slime.elasticity);
+        Vec2 vel = vec2_mult(dir, (line.length-dist)/2 * slime->elasticity);
         
         p1->point = vec2_add(p1->point,vel);
         p2->point = vec2_sub(p2->point, vel);
     }
+}
 
+void slime_render(Slime slime){
     for(int i = 0; i < slime.lines->len; i++){
         Line line = *((Line*)arraylist_get(slime.lines,i));
         Point p1 = *((Point*)arraylist_get(slime.points, line.idx1));
         Point p2 = *((Point*)arraylist_get(slime.points, line.idx2));
 
-        // vec2_print(p1.point);
-        // vec2_print(p2.point);
         SDL_SetRenderDrawColor(global.rendering.renderer, 255,255,255,255);
         SDL_RenderDrawLine(global.rendering.renderer, p1.point.x, -p1.point.y+screen_height, p2.point.x, -p2.point.y+screen_height);
     }

@@ -22,4 +22,5 @@ typedef struct {
 
 void slime_update(Slime* slime);
 void slime_destroy(Slime* slime);
+void slime_render(Slime slime);
 Slime* slime_create(i32 pts[][2], u32 connections[][2], i32 scale, f32 elasticity);
