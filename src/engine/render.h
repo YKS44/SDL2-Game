@@ -16,3 +16,4 @@ typedef struct{
 
 void render_init(void);
 void render_periodic(void);
+void render_add_rect(void);

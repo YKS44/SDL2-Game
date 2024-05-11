@@ -21,6 +21,38 @@ int main()
 
     bool run = true;
 
+    Entity mouse;
+    mouse.type = RectType;
+    mouse.u.rectEntity.rect.w = 50;
+    mouse.u.rectEntity.rect.h = 50;
+    mouse.u.rectEntity.rect.pos.x = 0;
+    mouse.u.rectEntity.rect.pos.y = 0;
+    mouse.u.rectEntity.vel.x = 0;
+    mouse.u.rectEntity.vel.y = 0;
+
+    Entity rec;
+    rec.type = RectType;
+    rec.u.rectEntity.rect.h = 100;
+    rec.u.rectEntity.rect.w = 100;
+    rec.u.rectEntity.rect.pos.x = 500;
+    rec.u.rectEntity.rect.pos.y = 500;
+    rec.u.rectEntity.vel.x = 0;
+    rec.u.rectEntity.vel.y = 0;
+
+    Entity diff;
+
+    diff.type = RectType;
+    diff.u.rectEntity.rect.h = 0;
+    diff.u.rectEntity.rect.w = 0;
+    diff.u.rectEntity.rect.pos.x = 0;
+    diff.u.rectEntity.rect.pos.y = 0;
+    diff.u.rectEntity.vel.x = 0;
+    diff.u.rectEntity.vel.y = 0;
+
+    entity_add(mouse);
+    entity_add(rec);
+    entity_add(diff);
+
     while(run){
         SDL_Event event;
         while(SDL_PollEvent(&event)){
@@ -33,8 +65,18 @@ int main()
         SDL_GetMouseState(&global.mouseX, &global.mouseY);
         global.mouseY = -global.mouseY + screen_height;
 
+        mouse.u.rectEntity.rect.pos.x = global.mouseX;
+        mouse.u.rectEntity.rect.pos.y = global.mouseY;
+
+        Rect min = rect_minkowski_diff(rec.u.rectEntity.rect, diff.u.rectEntity.rect);
+
+        diff.u.rectEntity.rect.h = min.h;
+        diff.u.rectEntity.rect.w = min.w;
+        diff.u.rectEntity.rect.pos.x = min.pos.x;
+        diff.u.rectEntity.rect.pos.y = min.pos.y;
+
         time_periodic();
-        entity_periodic();
+        // entity_periodic();
         render_periodic();
 
         f32 delay = (f32)TIME.loopDelay - (TIME.deltaTime*1000.0);

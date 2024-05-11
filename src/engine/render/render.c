@@ -53,3 +53,7 @@ void render_periodic(void){
     SDL_RenderPresent(global.rendering.renderer);
 }
 
+void render_add_rect(void){
+    
+}
+

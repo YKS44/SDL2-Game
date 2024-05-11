@@ -15,6 +15,7 @@
         "global.h": "c",
         "render.h": "c",
         "rect_ent.h": "c",
-        "vector.h": "c"
+        "vector.h": "c",
+        "entity.h": "c"
     }
 }
