@@ -53,7 +53,16 @@ void render_periodic(void){
     SDL_RenderPresent(global.rendering.renderer);
 }
 
-void render_add_rect(void){
-    
+void render_rect(Rect rect){
+    SDL_Rect r;
+    r.x = rect.pos.x;
+    r.y = rect.pos.y;
+    r.w = rect.w;
+    r.h = rect.h;
+
+    r.y = -r.y + screen_height;
+
+    SDL_SetRenderDrawColor(global.rendering.renderer, 255, 0, 0, 255);
+    SDL_RenderFillRect(global.rendering.renderer, &r);
 }
 

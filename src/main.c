@@ -39,20 +39,7 @@ int main()
     rec.u.rectEntity.vel.x = 0;
     rec.u.rectEntity.vel.y = 0;
 
-    Entity diff;
-
-    diff.type = RectType;
-    diff.u.rectEntity.rect.h = 0;
-    diff.u.rectEntity.rect.w = 0;
-    diff.u.rectEntity.rect.pos.x = 0;
-    diff.u.rectEntity.rect.pos.y = 0;
-    diff.u.rectEntity.vel.x = 0;
-    diff.u.rectEntity.vel.y = 0;
-
-    entity_add(mouse);
-    entity_add(rec);
-    entity_add(diff);
-
+    printf("%u\n", entity_list->len);
     while(run){
         SDL_Event event;
         while(SDL_PollEvent(&event)){
@@ -68,16 +55,23 @@ int main()
         mouse.u.rectEntity.rect.pos.x = global.mouseX;
         mouse.u.rectEntity.rect.pos.y = global.mouseY;
 
-        Rect min = rect_minkowski_diff(rec.u.rectEntity.rect, diff.u.rectEntity.rect);
+        Rect min = rect_minkowski_diff(rec.u.rectEntity.rect, mouse.u.rectEntity.rect);
+        printf("%f,%f\n", min.pos.x, min.pos.y);
+        printf("%u,%u\n", min.w,min.h);
+        printf("\n");
 
-        diff.u.rectEntity.rect.h = min.h;
-        diff.u.rectEntity.rect.w = min.w;
-        diff.u.rectEntity.rect.pos.x = min.pos.x;
-        diff.u.rectEntity.rect.pos.y = min.pos.y;
+        SDL_SetRenderDrawColor(global.rendering.renderer, 0, 0, 0, 255);
+        SDL_RenderClear(global.rendering.renderer);
+
+        render_rect(mouse.u.rectEntity.rect);
+        render_rect(rec.u.rectEntity.rect);
+        render_rect(min);
+
+        SDL_RenderPresent(global.rendering.renderer);
 
         time_periodic();
         // entity_periodic();
-        render_periodic();
+        // render_periodic();
 
         f32 delay = (f32)TIME.loopDelay - (TIME.deltaTime*1000.0);
         if(delay > 0){ //only add a delay if delta time is less than the loop delay. This way, the delay is not called when the framerate is already lower than the target framerate.
