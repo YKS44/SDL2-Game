@@ -15,6 +15,12 @@ Rect rect_minkowski_diff(Rect rect1, Rect rect2){
     return diff;
 }
 
+Vec2 rect_penetration_vec(Rect rect){
+    Vec2 vec;
+    f32 px = -rect.pos.x;
+    f32 py = 
+}
+
 bool rect_intersect_point(Rect rect, Point point){
     return point.point.x >= rect.pos.x &&
            point.point.x <= rect.pos.x+rect.w &&

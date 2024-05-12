@@ -63,9 +63,18 @@ int main()
         SDL_SetRenderDrawColor(global.rendering.renderer, 0, 0, 0, 255);
         SDL_RenderClear(global.rendering.renderer);
 
-        render_rect(mouse.u.rectEntity.rect);
-        render_rect(rec.u.rectEntity.rect);
-        render_rect(min);
+        u32 r = 255;
+
+        Point p;
+        p.point.x = 0;
+        p.point.y = 0;
+        if(rect_intersect_point(min, p)){
+            r = 100;
+        }
+
+        render_rect(mouse.u.rectEntity.rect,r);
+        render_rect(rec.u.rectEntity.rect,255);
+        render_rect(min,255);
 
         SDL_RenderPresent(global.rendering.renderer);
 

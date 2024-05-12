@@ -12,4 +12,7 @@ typedef struct {
 } Rect;
 
 Rect rect_minkowski_diff(Rect rect1, Rect rect2);
+
+//Calculate the penetration vector given the minkowski difference rect.
+Vec2 rect_penetration_vec(Rect rect);
 bool rect_intersect_point(Rect rect, Point point);
