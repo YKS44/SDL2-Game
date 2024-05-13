@@ -56,9 +56,6 @@ int main()
         mouse.u.rectEntity.rect.pos.y = global.mouseY;
 
         Rect min = rect_minkowski_diff(rec.u.rectEntity.rect, mouse.u.rectEntity.rect);
-        printf("%f,%f\n", min.pos.x, min.pos.y);
-        printf("%u,%u\n", min.w,min.h);
-        printf("\n");
 
         SDL_SetRenderDrawColor(global.rendering.renderer, 0, 0, 0, 255);
         SDL_RenderClear(global.rendering.renderer);
@@ -69,7 +66,9 @@ int main()
         p.point.x = 0;
         p.point.y = 0;
         if(rect_intersect_point(min, p)){
-            r = 100;
+            // r = 100;
+            Vec2 push_vec = rect_push_vec(min);
+            mouse.u.rectEntity.rect.pos = vec2_add(mouse.u.rectEntity.rect.pos, push_vec);
         }
 
         render_rect(mouse.u.rectEntity.rect,r);

@@ -1,4 +1,6 @@
 #include "../rect.h"
+#include <math.h>
+#include <stdio.h>
 
 Rect rect_minkowski_diff(Rect rect1, Rect rect2){
     Rect diff;
@@ -15,10 +17,28 @@ Rect rect_minkowski_diff(Rect rect1, Rect rect2){
     return diff;
 }
 
-Vec2 rect_penetration_vec(Rect rect){
+Vec2 rect_push_vec(Rect rect){
     Vec2 vec;
-    f32 px = -rect.pos.x;
-    f32 py = 
+    f32 px = rect.pos.x;
+    f32 py = rect.pos.y;
+
+    if(fabsf(px) > fabsf(px + rect.w)){
+        px += rect.w;
+    }
+
+    if(fabsf(py) > fabsf(py - rect.h)){
+        py -= rect.h;
+    }
+
+    if(fabsf(px) > fabsf(py)){
+        px = 0;
+    }else{
+        py = 0;
+    }
+
+    vec.x = px;
+    vec.y = py;
+    return vec;
 }
 
 bool rect_intersect_point(Rect rect, Point point){
