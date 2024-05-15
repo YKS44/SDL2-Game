@@ -1,6 +1,7 @@
 #include "../vector.h"
 #include <math.h>
 #include <stdio.h>
+#include "../util.h"
 
 Vec2 vec2_add(Vec2 a, Vec2 b){
     Vec2 added;
@@ -30,6 +31,12 @@ Vec2 vec2_normalized(Vec2 vector){
     
     return vector;
 }
+
+Hit vec2_ray_segment_intersection(Vec2 ray, Vec2 ray_start, Vec2 seg_start, Vec2 seg_end){
+    Hit hit;
+    return hit;
+}
+
 
 void vec2_print(Vec2 vector){
     printf("<%f,%f>\n",vector.x,vector.y);

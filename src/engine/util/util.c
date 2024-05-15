@@ -14,3 +14,13 @@ void delay(i32 millisec){
     
     while(clock() < startTime + millisec);
 }
+
+f32 sign(f32 num){
+    if(num > 0){
+        return 1;
+    }
+    if(num < 0){
+        return -1;
+    }
+    return 0;
+}

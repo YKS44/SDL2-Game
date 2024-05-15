@@ -1,6 +1,7 @@
 #include "../rect.h"
 #include <math.h>
 #include <stdio.h>
+#include "../util.h"
 
 Rect rect_minkowski_diff(Rect rect1, Rect rect2){
     Rect diff;
@@ -35,11 +36,70 @@ Vec2 rect_push_vec(Rect rect){
     }else{
         py = 0;
     }
-
     vec.x = px;
     vec.y = py;
     return vec;
 }
+
+Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
+    Hit hit;
+    f32 nearX, farX, nearY, farY, nearXT, farXT, nearYT, farYT;
+    // ray_start.x += sign(ray.x) * SMOL; //if the x or y of the start of the ray is directly in the center for some reason, it will shift its direction slightly to where the ray is pointing.
+    // ray_start.y += sign(ray.y) * SMOL; //maybe this is too unlikely, but who knows
+
+    if(ray_start.x - (rect.pos.x+rect.w/2) < 0){ //if the start of the ray is closer to the left side
+        nearX = rect.pos.x;
+        farX = rect.pos.x + rect.w;
+    }else{
+        nearX = rect.pos.x + rect.w;
+        farX = rect.pos.x;
+    }
+
+    if(ray_start.y - (rect.pos.y-rect.h/2) < 0){
+        nearY = rect.pos.y - rect.h;
+        farY = rect.pos.y;
+    }else{
+        nearY = rect.pos.y;
+        farY = rect.pos.y - rect.h;
+    }
+
+    if(ray.x != 0.0){
+        nearXT = (nearX - ray_start.x) / ray.x;
+        farXT = (farX - ray_start.x) / ray.x;
+    }else{
+        nearXT = INFINITY;
+        farXT = INFINITY;
+    }
+
+    if(ray.y != 0.0){
+        nearYT = (nearY - ray_start.y) / ray.y;
+        farYT = (farY - ray_start.y) / ray.y;
+    }else{
+        nearYT = INFINITY;
+        farYT = INFINITY;
+    }
+
+    if(farYT < nearXT || farXT < nearYT){
+        hit.is_hit = false;
+        return hit;
+    }
+
+    f32 nearTime = nearXT > nearYT ? nearXT : nearYT; //get the bigger of the near times
+    f32 farTime = farXT < farYT ? farXT : farYT; //get the smaller of the two far times
+
+    if(nearTime > 1 || farTime < 0){
+        hit.is_hit = false;
+        return hit;
+    }
+
+    f32 x = ray.x * nearTime + ray_start.x;
+    f32 y = ray.y * nearTime + ray_start.y;
+    hit.is_hit = true;
+    hit.pos = (Vec2) {.x = x, .y = y};
+    hit.time = nearTime;
+    return hit;
+}
+
 
 bool rect_intersect_point(Rect rect, Point point){
     return point.point.x >= rect.pos.x &&

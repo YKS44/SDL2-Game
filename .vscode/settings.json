@@ -16,6 +16,9 @@
         "render.h": "c",
         "rect_ent.h": "c",
         "vector.h": "c",
-        "entity.h": "c"
+        "entity.h": "c",
+        "limits": "c",
+        "ratio": "c",
+        "algorithm": "c"
     }
 }
