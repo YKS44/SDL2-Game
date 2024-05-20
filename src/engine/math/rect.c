@@ -2,6 +2,9 @@
 #include <math.h>
 #include <stdio.h>
 #include "../util.h"
+#include <SDL2/SDL.h>
+#include "../global.h"
+#include "../config.h"
 
 Rect rect_minkowski_diff(Rect rect1, Rect rect2){
     Rect diff;
@@ -55,6 +58,7 @@ Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
         farX = rect.pos.x;
     }
 
+
     if(ray_start.y - (rect.pos.y-rect.h/2) < 0){
         nearY = rect.pos.y - rect.h;
         farY = rect.pos.y;
@@ -78,9 +82,18 @@ Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
         nearYT = INFINITY;
         farYT = INFINITY;
     }
+    SDL_SetRenderDrawColor(global.rendering.renderer, 255,255,255,255);
+    SDL_RenderDrawLine(global.rendering.renderer, ray.x*nearXT+ray_start.x, 500, ray.x*nearXT+ray_start.x, -500);
+    SDL_RenderDrawLine(global.rendering.renderer, 1000, -(ray.y*nearYT+ray_start.y)+screen_height, -500, -(ray.y*nearYT+ray_start.y)+screen_height);
 
-    if(farYT < nearXT || farXT < nearYT){
+    SDL_SetRenderDrawColor(global.rendering.renderer, 255,0,255,255);
+    SDL_RenderDrawLine(global.rendering.renderer, ray.x*farXT+ray_start.x, 500, ray.x*farXT+ray_start.x, -500);
+    SDL_RenderDrawLine(global.rendering.renderer, 1000, -(ray.y*farYT+ray_start.y)+screen_height, -500, -(ray.y*farYT+ray_start.y)+screen_height);
+
+
+    if(fabsf(farXT) < nearYT || fabsf(farYT) < nearXT){
         hit.is_hit = false;
+        printf("%f,%f,%f,%f\n",nearXT,fabsf(farXT),nearYT,fabsf(farYT));
         return hit;
     }
 
@@ -89,6 +102,7 @@ Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
 
     if(nearTime > 1 || farTime < 0){
         hit.is_hit = false;
+        printf("two\n");
         return hit;
     }
 
