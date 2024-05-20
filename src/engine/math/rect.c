@@ -50,7 +50,7 @@ Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
     // ray_start.x += sign(ray.x) * SMOL; //if the x or y of the start of the ray is directly in the center for some reason, it will shift its direction slightly to where the ray is pointing.
     // ray_start.y += sign(ray.y) * SMOL; //maybe this is too unlikely, but who knows
 
-    if(ray_start.x - (rect.pos.x+rect.w/2) < 0){ //if the start of the ray is closer to the left side
+    if(ray.x > 0){
         nearX = rect.pos.x;
         farX = rect.pos.x + rect.w;
     }else{
@@ -58,13 +58,12 @@ Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
         farX = rect.pos.x;
     }
 
-
-    if(ray_start.y - (rect.pos.y-rect.h/2) < 0){
+    if(ray.y > 0){
         nearY = rect.pos.y - rect.h;
         farY = rect.pos.y;
     }else{
         nearY = rect.pos.y;
-        farY = rect.pos.y - rect.h;
+        farY = rect.pos.y;
     }
 
     if(ray.x != 0.0){
