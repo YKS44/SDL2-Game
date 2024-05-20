@@ -63,7 +63,7 @@ Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
         farY = rect.pos.y;
     }else{
         nearY = rect.pos.y;
-        farY = rect.pos.y;
+        farY = rect.pos.y - rect.h;
     }
 
     if(ray.x != 0.0){
