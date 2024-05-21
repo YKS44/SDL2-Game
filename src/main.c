@@ -43,7 +43,7 @@ int main()
     Vec2 mouseStart = {.x = 0, .y = 0};
     Vec2 mouseCur = {.x = 0, .y = 0};
     bool mouseHeld = false;
-
+    
     while(run){
         SDL_GetMouseState(&global.mouseX, &global.mouseY);
         global.mouseY = -global.mouseY + screen_height;

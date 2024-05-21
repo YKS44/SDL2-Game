@@ -47,13 +47,14 @@ Vec2 rect_push_vec(Rect rect){
 Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
     Hit hit;
     f32 nearX, farX, nearY, farY, nearXT, farXT, nearYT, farYT;
+    bool isRayConstant = false;
     // ray_start.x += sign(ray.x) * SMOL; //if the x or y of the start of the ray is directly in the center for some reason, it will shift its direction slightly to where the ray is pointing.
     // ray_start.y += sign(ray.y) * SMOL; //maybe this is too unlikely, but who knows
 
     if(ray.x > 0){
         nearX = rect.pos.x;
         farX = rect.pos.x + rect.w;
-    }else{
+    }else{ //also kind of handles ray.x == 0 later in the code
         nearX = rect.pos.x + rect.w;
         farX = rect.pos.x;
     }
@@ -61,39 +62,41 @@ Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
     if(ray.y > 0){
         nearY = rect.pos.y - rect.h;
         farY = rect.pos.y;
-    }else{
+    }else{ //also kind of handles ray.y == 0 later in the code
         nearY = rect.pos.y;
         farY = rect.pos.y - rect.h;
     }
 
-    if(ray.x != 0.0){
-        nearXT = (nearX - ray_start.x) / ray.x;
-        farXT = (farX - ray_start.x) / ray.x;
-    }else{
-        nearXT = INFINITY;
+    nearXT = (nearX - ray_start.x) / ray.x;
+    farXT = (farX - ray_start.x) / ray.x;
+
+    nearYT = (nearY - ray_start.y) / ray.y;
+    farYT = (farY - ray_start.y) / ray.y;
+
+
+    if(isinf(nearXT) || isinf(farXT)){
+        isRayConstant = true;
+        nearXT = -INFINITY;
         farXT = INFINITY;
+        if(ray_start.x > nearX || ray_start.x < farX){ //The left side is farX and nearX is right side because before this code, it does that when determining near and far side
+            hit.is_hit = false;
+            return hit;
+        }
     }
-
-    if(ray.y != 0.0){
-        nearYT = (nearY - ray_start.y) / ray.y;
-        farYT = (farY - ray_start.y) / ray.y;
-    }else{
-        nearYT = INFINITY;
+    if(isinf(nearYT) || isinf(farYT)){
+        isRayConstant = true;
+        nearYT = -INFINITY;
         farYT = INFINITY;
+        if(ray_start.y > nearY || ray_start.y < farY){ 
+            hit.is_hit = false;
+            return hit;
+        }
     }
-    SDL_SetRenderDrawColor(global.rendering.renderer, 255,255,255,255);
-    SDL_RenderDrawLine(global.rendering.renderer, ray.x*nearXT+ray_start.x, 500, ray.x*nearXT+ray_start.x, -500);
-    SDL_RenderDrawLine(global.rendering.renderer, 1000, -(ray.y*nearYT+ray_start.y)+screen_height, -500, -(ray.y*nearYT+ray_start.y)+screen_height);
-
-    SDL_SetRenderDrawColor(global.rendering.renderer, 255,0,255,255);
-    SDL_RenderDrawLine(global.rendering.renderer, ray.x*farXT+ray_start.x, 500, ray.x*farXT+ray_start.x, -500);
-    SDL_RenderDrawLine(global.rendering.renderer, 1000, -(ray.y*farYT+ray_start.y)+screen_height, -500, -(ray.y*farYT+ray_start.y)+screen_height);
-
-
-    if(fabsf(farXT) < nearYT || fabsf(farYT) < nearXT){
-        hit.is_hit = false;
-        printf("%f,%f,%f,%f\n",nearXT,fabsf(farXT),nearYT,fabsf(farYT));
-        return hit;
+    if(!isRayConstant){
+        if(farXT < nearYT || farYT < nearXT){
+            hit.is_hit = false;
+            return hit;
+        }
     }
 
     f32 nearTime = nearXT > nearYT ? nearXT : nearYT; //get the bigger of the near times
@@ -101,12 +104,15 @@ Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
 
     if(nearTime > 1 || farTime < 0){
         hit.is_hit = false;
-        printf("two\n");
         return hit;
     }
 
+    nearTime = !isfinite(nearTime) ? 0.0 : nearTime;
+    farTime = !isfinite(farTime) ? 0.0 : farTime;
+
     f32 x = ray.x * nearTime + ray_start.x;
     f32 y = ray.y * nearTime + ray_start.y;
+
     hit.is_hit = true;
     hit.pos = (Vec2) {.x = x, .y = y};
     hit.time = nearTime;
