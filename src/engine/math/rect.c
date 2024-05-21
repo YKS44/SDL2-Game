@@ -12,13 +12,26 @@ Rect rect_minkowski_diff(Rect rect1, Rect rect2){
     diff.pos.x = rect1.pos.x - rect2.pos.x;
     diff.pos.y = rect1.pos.y - rect2.pos.y;
 
-    diff.h = (rect1.h+rect2.h);
-    diff.w = (rect1.w+rect2.w);
+    diff.h = rect1.h+rect2.h;
+    diff.w = rect1.w+rect2.w;
 
     diff.pos.x -= rect2.w;
     diff.pos.y += rect2.h;
     
     return diff;
+}
+
+//adds the half the size of the second rectangle to all the sides for the first rectangle. does that make sense?
+Rect rect_size_sum(Rect rect1, Rect rect2){
+    Rect sum;
+
+    sum.w = rect1.w + rect2.w;
+    sum.h = rect1.h + rect2.h;
+
+    sum.pos.x = rect1.pos.x - rect2.w/2;
+    sum.pos.y = rect1.pos.y + rect2.h/2;
+
+    return sum;
 }
 
 Vec2 rect_push_vec(Rect rect){

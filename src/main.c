@@ -39,11 +39,20 @@ int main()
     rec.u.rectEntity.vel.x = 0;
     rec.u.rectEntity.vel.y = 0;
 
+    Entity add;
+    add.type = RectType;
+    add.u.rectEntity.rect.h = 100;
+    add.u.rectEntity.rect.w = 100;
+    add.u.rectEntity.rect.pos.x = 500;
+    add.u.rectEntity.rect.pos.y = 500;
+    add.u.rectEntity.vel.x = 0;
+    add.u.rectEntity.vel.y = 0;
+
 
     Vec2 mouseStart = {.x = 0, .y = 0};
     Vec2 mouseCur = {.x = 0, .y = 0};
     bool mouseHeld = false;
-    
+
     while(run){
         SDL_GetMouseState(&global.mouseX, &global.mouseY);
         global.mouseY = -global.mouseY + screen_height;
@@ -69,7 +78,17 @@ int main()
         render_rect(rec.u.rectEntity.rect,255);
 
         if(mouseHeld){
+            Rect added = rect_size_sum(rec.u.rectEntity.rect, add.u.rectEntity.rect);
+            SDL_Rect rAdded;
+            rAdded.x = added.pos.x;
+            rAdded.y = added.pos.y;
+            rAdded.h = added.h;
+            rAdded.w = added.w;
+            rAdded.y = -added.pos.y + screen_height;
+            printf("%f,%f,%u,%u\n", added.pos.x, added.pos.y, added.w, added.h);
             SDL_SetRenderDrawColor(global.rendering.renderer, 255, 255, 255, 255);
+
+            SDL_RenderFillRect(global.rendering.renderer, &rAdded);
 
             mouseCur = (Vec2) {.x = global.mouseX, .y = global.mouseY};
             Vec2 ray = vec2_sub(mouseCur, mouseStart);
