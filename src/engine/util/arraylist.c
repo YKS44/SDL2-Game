@@ -85,3 +85,9 @@ void arraylist_remove(ArrayList* list, u32 index){
     // list->len--;
     memcpy(removeLoc, lastItem, list->item_size);
 }
+
+ArrayList* arraylist_clear(ArrayList* list){
+    usize size = list->item_size;
+    free(list);
+    return arraylist_create(size);
+}

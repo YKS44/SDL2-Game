@@ -12,12 +12,14 @@
 #include "engine/config.h"
 #include "engine/slime.h"
 #include "engine/timer.h"
+#include "engine/keyboard.h"
 
 int main()
 {
     render_init();
     entity_init();
     time_init();
+    keyboard_init();
 
     bool run = true;
 
@@ -70,6 +72,18 @@ int main()
                 case SDL_MOUSEBUTTONUP:
                     mouseHeld = false;
                     break;
+                case SDL_KEYDOWN:
+                    if(!KEYS[event.key.keysym.sym].held){
+                        KEYS[event.key.keysym.sym].pressed = true;
+                    }
+                    KEYS[event.key.keysym.sym].held = true;
+                    arraylist_append(instantKey, &event.key.keysym.sym);
+                    break;
+                case SDL_KEYUP:
+                    KEYS[event.key.keysym.sym].held = false;
+                    KEYS[event.key.keysym.sym].released = true;
+                    arraylist_append(instantKey, &event.key.keysym.sym);
+                    break;
             }
         }
 
@@ -77,18 +91,18 @@ int main()
         SDL_RenderClear(global.rendering.renderer);
         render_rect(rec.u.rectEntity.rect,255);
 
+        if(KEYS[SDLK_a].pressed){
+            printf("pressed\n");
+        }
+        if(KEYS[SDLK_a].held){
+            printf("held\n");
+        }
+        if(KEYS[SDLK_a].released){
+            printf("released\n");
+        }
+
         if(mouseHeld){
             Rect added = rect_size_sum(rec.u.rectEntity.rect, add.u.rectEntity.rect);
-            SDL_Rect rAdded;
-            rAdded.x = added.pos.x;
-            rAdded.y = added.pos.y;
-            rAdded.h = added.h;
-            rAdded.w = added.w;
-            rAdded.y = -added.pos.y + screen_height;
-            printf("%f,%f,%u,%u\n", added.pos.x, added.pos.y, added.w, added.h);
-            SDL_SetRenderDrawColor(global.rendering.renderer, 255, 255, 255, 255);
-
-            SDL_RenderFillRect(global.rendering.renderer, &rAdded);
 
             mouseCur = (Vec2) {.x = global.mouseX, .y = global.mouseY};
             Vec2 ray = vec2_sub(mouseCur, mouseStart);
@@ -133,6 +147,7 @@ int main()
         time_periodic();
         // entity_periodic();
         // render_periodic();
+        keyboard_update_justPressed();
 
         f32 delay = (f32)TIME.loopDelay - (TIME.deltaTime*1000.0);
         if(delay > 0){ //only add a delay if delta time is less than the loop delay. This way, the delay is not called when the framerate is already lower than the target framerate.
