@@ -50,7 +50,6 @@ int main()
     add.u.rectEntity.vel.x = 0;
     add.u.rectEntity.vel.y = 0;
 
-
     Vec2 mouseStart = {.x = 0, .y = 0};
     Vec2 mouseCur = {.x = 0, .y = 0};
     bool mouseHeld = false;
@@ -60,6 +59,7 @@ int main()
         global.mouseY = -global.mouseY + screen_height;
 
         SDL_Event event;
+        SDL_Keycode keycode;
         while(SDL_PollEvent(&event)){
             switch(event.type){
                 case SDL_QUIT:
@@ -73,16 +73,28 @@ int main()
                     mouseHeld = false;
                     break;
                 case SDL_KEYDOWN:
-                    if(!KEYS[event.key.keysym.sym].held){
-                        KEYS[event.key.keysym.sym].pressed = true;
-                    }
-                    KEYS[event.key.keysym.sym].held = true;
-                    arraylist_append(instantKey, &event.key.keysym.sym);
+                    keycode = event.key.keysym.sym;
+
+                    if(keycode < 322){
+                        if(!KEYS[keycode].held){ //cuz if you keep holding down your keyboard, mac book detects it as pressing it multiple times
+                            KEYS[keycode].pressed = true;
+                        }
+                        KEYS[keycode].held = true;
+                        arraylist_append(instantKey, &keycode);
+                    }else{//only pressed some modifer key
+                        keymod = event.key.keysym.mod; 
+                    }           
                     break;
                 case SDL_KEYUP:
-                    KEYS[event.key.keysym.sym].held = false;
-                    KEYS[event.key.keysym.sym].released = true;
-                    arraylist_append(instantKey, &event.key.keysym.sym);
+                    keycode = event.key.keysym.sym;
+                    
+                    if(keycode < 322){
+                        KEYS[keycode].held = false;
+                        KEYS[keycode].released = true;
+                        arraylist_append(instantKey, &keycode);
+                    }else{
+                        keymod = KMOD_NONE;
+                    }
                     break;
             }
         }
@@ -91,19 +103,7 @@ int main()
         SDL_RenderClear(global.rendering.renderer);
         render_rect(rec.u.rectEntity.rect,255);
 
-        if(KEYS[SDLK_a].pressed){
-            printf("pressed\n");
-        }
-        if(KEYS[SDLK_a].held){
-            printf("held\n");
-        }
-        if(KEYS[SDLK_a].released){
-            printf("released\n");
-        }
-
         if(mouseHeld){
-            Rect added = rect_size_sum(rec.u.rectEntity.rect, add.u.rectEntity.rect);
-
             mouseCur = (Vec2) {.x = global.mouseX, .y = global.mouseY};
             Vec2 ray = vec2_sub(mouseCur, mouseStart);
             Hit hit = rect_intersect_ray(rec.u.rectEntity.rect, mouseStart, ray);
@@ -122,32 +122,13 @@ int main()
 
             }
         }
-        // mouse.u.rectEntity.rect.pos.x = global.mouseX;
-        // mouse.u.rectEntity.rect.pos.y = global.mouseY;
-
-        // Rect min = rect_minkowski_diff(rec.u.rectEntity.rect, mouse.u.rectEntity.rect);
-
-
-        u32 r = 255;
-
-        Point p;
-        p.point.x = 0;
-        p.point.y = 0;
-        // if(rect_intersect_point(min, p)){
-        //     // r = 100;
-        //     Vec2 push_vec = rect_push_vec(min);
-        //     mouse.u.rectEntity.rect.pos = vec2_add(mouse.u.rectEntity.rect.pos, push_vec);
-        // }
-
-        // render_rect(mouse.u.rectEntity.rect,r);
-        // render_rect(min,255);
 
         SDL_RenderPresent(global.rendering.renderer);
 
         time_periodic();
         // entity_periodic();
         // render_periodic();
-        keyboard_update_justPressed();
+        keyboard_update_instantKey();
 
         f32 delay = (f32)TIME.loopDelay - (TIME.deltaTime*1000.0);
         if(delay > 0){ //only add a delay if delta time is less than the loop delay. This way, the delay is not called when the framerate is already lower than the target framerate.
