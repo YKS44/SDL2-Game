@@ -34,6 +34,7 @@ Vec2 vec2_normalized(Vec2 vector){
 
 Hit vec2_ray_segment_intersection(Vec2 ray, Vec2 ray_start, Vec2 seg_start, Vec2 seg_end){
     Hit hit;
+    //TODO implement
     return hit;
 }
 

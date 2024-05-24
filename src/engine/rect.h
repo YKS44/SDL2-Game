@@ -19,3 +19,4 @@ Vec2 rect_push_vec(Rect rect);
 Hit rect_intersect_ray(Rect rect, Vec2 startPos, Vec2 velocity);
 bool rect_intersect_point(Rect rect, Point point);
 Rect rect_size_sum(Rect rect1, Rect rect2);
+Vec2 rect_get_midpoint(Rect rect);

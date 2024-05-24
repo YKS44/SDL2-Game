@@ -54,6 +54,18 @@ Entity* entity_add(Entity ent){
     return addedEntity;
 }
 
+Hit entity_get_future_collision_point(RectEntity ent, Rect rect){
+    Rect size_sum = rect_size_sum(rect, ent.rect);
+    Vec2 midpt = rect_get_midpoint(ent.rect);
+    Hit hit_point = rect_intersect_ray(size_sum, midpt, ent.vel);
+    if(!hit_point.is_hit){
+        hit_point.pos = vec2_add(midpt,ent.vel);
+    }else{
+        printf("hit!\n");
+    }
+    return hit_point;
+}
+
 void entity_print_info(Entity ent){
     // printf("X: %f\n", ent.rect.pos.x);
     // printf("Y: %f\n", ent.rect.pos.y);

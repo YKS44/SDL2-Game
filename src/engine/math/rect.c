@@ -93,6 +93,7 @@ Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
         farXT = INFINITY;
         if(ray_start.x > nearX || ray_start.x < farX){ //The left side is farX and nearX is right side because before this code, it does that when determining near and far side
             hit.is_hit = false;
+            hit.time = INFINITY;
             return hit;
         }
     }
@@ -102,12 +103,14 @@ Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
         farYT = INFINITY;
         if(ray_start.y > nearY || ray_start.y < farY){ 
             hit.is_hit = false;
+            hit.time = INFINITY;
             return hit;
         }
     }
     if(!isRayConstant){
         if(farXT < nearYT || farYT < nearXT){
             hit.is_hit = false;
+            hit.time = INFINITY;
             return hit;
         }
     }
@@ -117,6 +120,7 @@ Hit rect_intersect_ray(Rect rect, Vec2 ray_start, Vec2 ray){
 
     if(nearTime > 1 || farTime < 0){
         hit.is_hit = false;
+        hit.time = INFINITY;
         return hit;
     }
 
@@ -138,4 +142,11 @@ bool rect_intersect_point(Rect rect, Point point){
            point.point.x <= rect.pos.x+rect.w &&
            point.point.y >= rect.pos.y-rect.h &&
            point.point.y <= rect.pos.y;
+}
+
+Vec2 rect_get_midpoint(Rect rect){
+    Vec2 mid;
+    mid.x = rect.pos.x + rect.w/2;
+    mid.y = rect.pos.y - rect.h/2;
+    return mid;
 }
