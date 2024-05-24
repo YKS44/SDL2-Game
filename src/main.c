@@ -23,37 +23,6 @@ int main()
 
     bool run = true;
 
-    Entity mouse;
-    mouse.type = RectType;
-    mouse.u.rectEntity.rect.w = 50;
-    mouse.u.rectEntity.rect.h = 50;
-    mouse.u.rectEntity.rect.pos.x = 0;
-    mouse.u.rectEntity.rect.pos.y = 0;
-    mouse.u.rectEntity.vel.x = 0;
-    mouse.u.rectEntity.vel.y = 0;
-
-    Entity rec;
-    rec.type = RectType;
-    rec.u.rectEntity.rect.h = 100;
-    rec.u.rectEntity.rect.w = 100;
-    rec.u.rectEntity.rect.pos.x = 500;
-    rec.u.rectEntity.rect.pos.y = 500;
-    rec.u.rectEntity.vel.x = 0;
-    rec.u.rectEntity.vel.y = 0;
-
-    Entity add;
-    add.type = RectType;
-    add.u.rectEntity.rect.h = 100;
-    add.u.rectEntity.rect.w = 100;
-    add.u.rectEntity.rect.pos.x = 500;
-    add.u.rectEntity.rect.pos.y = 500;
-    add.u.rectEntity.vel.x = 0;
-    add.u.rectEntity.vel.y = 0;
-
-    Vec2 mouseStart = {.x = 0, .y = 0};
-    Vec2 mouseCur = {.x = 0, .y = 0};
-    bool mouseHeld = false;
-
     while(run){
         SDL_GetMouseState(&global.mouseX, &global.mouseY);
         global.mouseY = -global.mouseY + screen_height;
@@ -65,17 +34,10 @@ int main()
                 case SDL_QUIT:
                     run = false;
                     break;
-                case SDL_MOUSEBUTTONDOWN:
-                    mouseHeld = true;
-                    mouseStart = (Vec2){.x = global.mouseX, .y = global.mouseY};
-                    break;
-                case SDL_MOUSEBUTTONUP:
-                    mouseHeld = false;
-                    break;
                 case SDL_KEYDOWN:
                     keycode = event.key.keysym.sym;
 
-                    if(keycode < 322){
+                    if(keycode < 322){ //for some reason keysym.sym also detects modifer keys, but their numbers are really big, so only update when you know its not a mod key.
                         if(!KEYS[keycode].held){ //cuz if you keep holding down your keyboard, mac book detects it as pressing it multiple times
                             KEYS[keycode].pressed = true;
                         }
@@ -98,32 +60,6 @@ int main()
                     break;
             }
         }
-
-        SDL_SetRenderDrawColor(global.rendering.renderer, 0, 0, 0, 255);
-        SDL_RenderClear(global.rendering.renderer);
-        render_rect(rec.u.rectEntity.rect,255);
-
-        if(mouseHeld){
-            mouseCur = (Vec2) {.x = global.mouseX, .y = global.mouseY};
-            Vec2 ray = vec2_sub(mouseCur, mouseStart);
-            Hit hit = rect_intersect_ray(rec.u.rectEntity.rect, mouseStart, ray);
-            SDL_RenderDrawLine(global.rendering.renderer, mouseStart.x, -mouseStart.y + screen_height, mouseCur.x, -mouseCur.y + screen_height);
-            if(hit.is_hit){
-                SDL_Rect hitPoint;
-                hitPoint.h = 10;
-                hitPoint.w = 10;
-                hitPoint.x = hit.pos.x;
-                hitPoint.y = hit.pos.y;
-                hitPoint.y = -hitPoint.y + screen_height;
-
-                SDL_SetRenderDrawColor(global.rendering.renderer, 255, 255, 255, 255);
-
-                SDL_RenderFillRect(global.rendering.renderer, &hitPoint);
-
-            }
-        }
-
-        SDL_RenderPresent(global.rendering.renderer);
 
         time_periodic();
         // entity_periodic();
