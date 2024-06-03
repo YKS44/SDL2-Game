@@ -17,15 +17,9 @@ void rect_ent_update(RectEntity* ent)
     }
 }
 
-void rect_ent_render(RectEntity ent){
-    SDL_Rect rect;
-
-    rect.x = ent.rect.pos.x;
-    rect.y = ent.rect.pos.y;
-    rect.w = ent.rect.w;
-    rect.h = ent.rect.h;
-
-    rect.y = -rect.y + screen_height;
-    SDL_SetRenderDrawColor(global.rendering.renderer, 255, 0, 0, 255);
-    SDL_RenderFillRect(global.rendering.renderer, &rect);
+RectEntity rect_ent_create(Rect rect){
+    RectEntity ent;
+    ent.rect = rect;
+    ent.vel = (Vec2){.x=0, .y=0};
+    return ent;
 }

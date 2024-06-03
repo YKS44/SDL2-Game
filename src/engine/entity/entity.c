@@ -48,7 +48,7 @@ void entity_periodic(){
     }
 }
 
-//adds the new entity to the list of entities to update and returns its pointer
+//adds the new entity to the list of entities to update and returns its pointer. Although the pointer may be a little unstable.
 Entity* entity_add(Entity ent){
     Entity* addedEntity = (Entity*) arraylist_append(entity_list, &ent);
     return addedEntity;

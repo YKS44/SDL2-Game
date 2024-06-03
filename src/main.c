@@ -66,6 +66,8 @@ int main()
                     break;
             }
         }
+        SDL_SetRenderDrawColor(global.rendering.renderer, 0, 0, 0, 255);
+        SDL_RenderClear(global.rendering.renderer);
 
         if(KEYS[SDLK_d].pressed){
             player.vel.x = 10;
@@ -86,8 +88,10 @@ int main()
 
         Hit theone;
         if(one.time > two.time){
+            printf("right\n");
             theone = two;
         }else{
+            printf("left\n");
             theone = one;
         }
 
@@ -98,8 +102,6 @@ int main()
         
         SDL_Rect pr = {.x = player.rect.pos.x, .y = player.rect.pos.y, .w = player.rect.w, .h = player.rect.h};
         // printf("%f,%f\n",theone.pos.x,theone.pos.y);
-        SDL_SetRenderDrawColor(global.rendering.renderer, 0,0,0,255);
-        SDL_RenderClear(global.rendering.renderer);
 
         SDL_SetRenderDrawColor(global.rendering.renderer, 255,0,0,255);
         SDL_RenderFillRect(global.rendering.renderer, &wr1);
@@ -107,11 +109,12 @@ int main()
         SDL_RenderFillRect(global.rendering.renderer, &pr);
 
 
-        SDL_RenderPresent(global.rendering.renderer);
         time_periodic();
         // entity_periodic();
-        // render_periodic();
+        render_periodic();
         keyboard_update_instantKey();
+
+        SDL_RenderPresent(global.rendering.renderer);
 
         f32 delay = (f32)TIME.loopDelay - (TIME.deltaTime*1000.0);
         if(delay > 0){ //only add a delay if delta time is less than the loop delay. This way, the delay is not called when the framerate is already lower than the target framerate.

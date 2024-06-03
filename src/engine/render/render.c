@@ -9,16 +9,10 @@ void render_init(void){
     global.rendering.window = SDL_CreateWindow(screen_title, screen_pos_x, screen_pos_y, screen_width, screen_height, SDL_WINDOW_SHOWN);
     global.rendering.renderer = SDL_CreateRenderer(global.rendering.window, -1, SDL_RENDERER_ACCELERATED);
     SDL_Init(SDL_INIT_EVERYTHING);
-
-    global.rendering.render_entity_list = arraylist_create(sizeof(Entity));
-    // global.rendering.tile_list = arraylist_create(sizeof(RenderData));
 } 
 
 void render_periodic(void){
     //clear the screen with black
-    SDL_SetRenderDrawColor(global.rendering.renderer, 0, 0, 0, 255);
-    SDL_RenderClear(global.rendering.renderer);
-
     //Draw the tiles first
     // for(int i = 0; i < global.rendering.tile_list->len; i++){
     //     RenderData render_data = *((RenderData*) arraylist_get(global.rendering.tile_list, i));
@@ -48,12 +42,9 @@ void render_periodic(void){
                 break;
         }
     }
-
-    //actually update the screen
-    SDL_RenderPresent(global.rendering.renderer);
 }
 
-void render_rect(Rect rect, u32 ra){
+void render_fill_rect(Rect rect, RGBA color){
     SDL_Rect r;
     r.x = rect.pos.x;
     r.y = rect.pos.y;
@@ -62,7 +53,19 @@ void render_rect(Rect rect, u32 ra){
 
     r.y = -r.y + screen_height;
 
-    SDL_SetRenderDrawColor(global.rendering.renderer, ra, 0, 0, 255);
+    render_set_draw_color(color);
     SDL_RenderFillRect(global.rendering.renderer, &r);
+}
+
+void render_line(Vec2 p1, Vec2 p2, RGBA color){
+    p1.y = -p1.y + screen_height;
+    p2.y = -p2.y + screen_height;
+
+    render_set_draw_color(color);
+    SDL_RenderDrawLine(global.rendering.renderer, p1.x, p1.y, p2.x, p2.y);
+}
+
+static void render_set_draw_color(RGBA color){
+    SDL_SetRenderDrawColor(global.rendering.renderer, color.r, color.g, color.b, color.a);
 }
 
