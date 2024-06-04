@@ -21,4 +21,4 @@ LinkedList* linkedlist_create(usize item_size);
 
 //Adds an item to the linked list and returns the pointer to the node.
 Node* linkedlist_append(LinkedList* list, void* item);
-void linked_list_remove(LinkedList* list, Node* loc);
+void linkedlist_remove(LinkedList* list, Node* loc);

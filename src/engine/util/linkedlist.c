@@ -41,7 +41,7 @@ Node* linkedlist_append(LinkedList* list, void* item){
     return newHead;
 }
 
-void linked_list_remove(LinkedList* list, Node* loc){
+void linkedlist_remove(LinkedList* list, Node* loc){
     if(loc->prev){ //if the previous node is not null
         loc->prev->next = loc->next ? loc->next : NULL;
     }

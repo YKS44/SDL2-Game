@@ -5,9 +5,9 @@
 #include "../timer.h"
 #include "../rect_ent.h"
 
-ArrayList* entity_list = NULL;
+LinkedList* entity_list = NULL;
 void entity_init(){
-    entity_list = arraylist_create(sizeof(Entity));
+    entity_list = linkedlist_create(sizeof(Entity));
     // for(int i = 0; i < 10; i++){
     //     Entity ent;
     //     ent.type = RectType;
@@ -22,10 +22,10 @@ void entity_init(){
     //     entity_add(ent);
     // }
 
-    i32 pts[6][2] = {{0,0},{2,0},{0,-2},{2,-2},{1,-3},{1,1}};
+    i32 points[6][2] = {{0,0},{2,0},{0,-2},{2,-2},{1,-3},{1,1}};
     u32 connections[10][2] = {{0,1},{0,2},{0,5},{1,3},{1,5},{2,3},{2,4},{3,4} ,{0,3},{1,2}};
 
-    Slime slime = slime_create(pts, sizeof(pts)/sizeof(pts[0]), connections, sizeof(connections)/sizeof(connections[0]), 50, 0.5);
+    Slime slime = slime_create(points, sizeof(points)/sizeof(points[0]), connections, sizeof(connections)/sizeof(connections[0]), 50, 0.5);
     Entity sl;
     sl.type = SlimeType;
     sl.u.slimeEntity = slime;
@@ -33,8 +33,9 @@ void entity_init(){
 }
 
 void entity_periodic(){
+    Node* cur = entity_list->head;
     for(int i = 0; i < entity_list->len; i++){
-        Entity* ent = (Entity*) arraylist_get(entity_list, i);
+        Entity* ent = (Entity*) cur->item;
         
         switch(ent->type){
             case RectType:
@@ -45,12 +46,12 @@ void entity_periodic(){
                 slime_update(&(ent->u.slimeEntity));
                 break;
         }
+        cur = cur->prev;
     }
 }
 
-//adds the new entity to the list of entities to update and returns its pointer. Although the pointer may be a little unstable.
-Entity* entity_add(Entity ent){
-    Entity* addedEntity = (Entity*) arraylist_append(entity_list, &ent);
+Node* entity_add(Entity ent){
+    Node* addedEntity = linkedlist_append(entity_list, &ent);
     return addedEntity;
 }
 
