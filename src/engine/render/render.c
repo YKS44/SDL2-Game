@@ -5,6 +5,10 @@
 #include "../arraylist.h"
 #include "../entity.h"
 
+static void render_set_draw_color(RGBA color){
+    SDL_SetRenderDrawColor(global.rendering.renderer, color.r, color.g, color.b, color.a);
+}
+
 void render_init(void){
     global.rendering.window = SDL_CreateWindow(screen_title, screen_pos_x, screen_pos_y, screen_width, screen_height, SDL_WINDOW_SHOWN);
     global.rendering.renderer = SDL_CreateRenderer(global.rendering.window, -1, SDL_RENDERER_ACCELERATED);
@@ -65,7 +69,4 @@ void render_line(Vec2 p1, Vec2 p2, RGBA color){
     SDL_RenderDrawLine(global.rendering.renderer, p1.x, p1.y, p2.x, p2.y);
 }
 
-static void render_set_draw_color(RGBA color){
-    SDL_SetRenderDrawColor(global.rendering.renderer, color.r, color.g, color.b, color.a);
-}
 

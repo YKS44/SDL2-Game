@@ -17,6 +17,10 @@ void rect_ent_update(RectEntity* ent)
     }
 }
 
+void rect_ent_render(RectEntity ent){
+    render_fill_rect(ent.rect, RED);
+}
+
 RectEntity rect_ent_create(Rect rect){
     RectEntity ent;
     ent.rect = rect;
