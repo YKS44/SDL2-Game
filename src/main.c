@@ -14,26 +14,12 @@
 #include "engine/timer.h"
 #include "engine/keyboard.h"
 #include "engine/linkedlist.h"
-#include "main.h"
 
 void test_init();
 void test_periodic();
 
-LinkedList* l = NULL;
-
 int main()
 {
-    // l = linkedlist_create(sizeof(Entity));
-
-    // RectEntity p = (RectEntity){.rect.h = 100, .rect.w = 100, .rect.pos.x = 300, .rect.pos.y = 500, .vel.x = 0, .vel.y = 0};
-    // Entity e = (Entity) {.type = RectType, .u.rectEntity = p};
-    // for(int i = 0; i < 7; i++){
-
-    //     linkedlist_append(l, &e);
-    // }
-
-
-
     render_init();
     entity_init();
     time_init();
