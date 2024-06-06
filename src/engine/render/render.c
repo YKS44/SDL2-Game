@@ -33,8 +33,9 @@ void render_periodic(void){
     // }
 
     // //Then draw the entities on top of it
+    Node* cur = entity_list->head;
     for(int i = 0; i < entity_list->len; i++){
-        Entity entity = *((Entity*) arraylist_get(entity_list, i));
+        Entity entity = *((Entity*) cur->item);
         
         switch(entity.type){
             case RectType:
@@ -45,6 +46,8 @@ void render_periodic(void){
                 slime_render(entity.u.slimeEntity);
                 break;
         }
+
+        cur = cur->prev;
     }
 }
 

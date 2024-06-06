@@ -19,7 +19,7 @@ LinkedList* linkedlist_create(usize item_size){
 
 Node* linkedlist_append(LinkedList* list, void* item){
     Node* newHead = malloc(sizeof(Node));
-    void* newItem = malloc(sizeof(list->item_size));
+    void* newItem = malloc(list->item_size);
 
     if(!newHead){
         ERROR_RETURN(NULL, "Could not allocate enough memory for the new item for LinkedList.");
@@ -52,5 +52,6 @@ void linkedlist_remove(LinkedList* list, Node* loc){
 
     list->len--;
 
+    free(loc->item);
     free(loc);
 }

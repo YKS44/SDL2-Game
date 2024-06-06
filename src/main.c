@@ -14,18 +14,32 @@
 #include "engine/timer.h"
 #include "engine/keyboard.h"
 #include "engine/linkedlist.h"
+#include "main.h"
 
 void test_init();
 void test_periodic();
 
+LinkedList* l = NULL;
+
 int main()
 {
+    // l = linkedlist_create(sizeof(Entity));
+
+    // RectEntity p = (RectEntity){.rect.h = 100, .rect.w = 100, .rect.pos.x = 300, .rect.pos.y = 500, .vel.x = 0, .vel.y = 0};
+    // Entity e = (Entity) {.type = RectType, .u.rectEntity = p};
+    // for(int i = 0; i < 7; i++){
+
+    //     linkedlist_append(l, &e);
+    // }
+
+
+
     render_init();
     entity_init();
     time_init();
     keyboard_init();
 
-    test_init();
+    // test_init();
 
     bool run = true;
     
@@ -96,8 +110,8 @@ int main()
 
 
         time_periodic();
-        test_periodic();
-        // entity_periodic();
+        // test_periodic();
+        entity_periodic();
         render_periodic();
 
         keyboard_update_instantKey();
@@ -129,21 +143,21 @@ void test_init(){
     Entity w1 = (Entity) {.type = RectType, .u.rectEntity = wall1};
     Entity w2 = (Entity) {.type = RectType, .u.rectEntity = wall2};
 
-    arraylist_append(entity_list, &p);
-    arraylist_append(entity_list, &w1);
-    arraylist_append(entity_list, &w2);
+    // entity_add(p);
+    // entity_add(w1);
+    // entity_add(w2);
 }
 
 void test_periodic(){
     if(KEYS[SDLK_d].pressed){
-            player.vel.x = 10;
+            player.vel.x = 100;
         }
         if(KEYS[SDLK_d].released){
             player.vel.x = 0;
         }
 
         if(KEYS[SDLK_a].pressed){
-            player.vel.x = -10;
+            player.vel.x = -100;
         }
         if(KEYS[SDLK_a].released){
             player.vel.x = 0;

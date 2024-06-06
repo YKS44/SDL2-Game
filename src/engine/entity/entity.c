@@ -8,28 +8,15 @@
 LinkedList* entity_list = NULL;
 void entity_init(){
     entity_list = linkedlist_create(sizeof(Entity));
-    // for(int i = 0; i < 10; i++){
-    //     Entity ent;
-    //     ent.type = RectType;
 
-    //     ent.RECT_ENT.rect.pos.x = random_range(0, screen_width);
-    //     ent.RECT_ENT.rect.pos.y = random_range(0,screen_height);
-    //     ent.RECT_ENT.rect.w = random_range(10,50);
-    //     ent.RECT_ENT.rect.h = random_range(10,50);
-    //     ent.RECT_ENT.vel.x = random_range(-100,100);
-    //     ent.RECT_ENT.vel.y = random_range(-100,100);
+    // i32 points[6][2] = {{0,0},{2,0},{0,-2},{2,-2},{1,-3},{1,1}};
+    // u32 connections[10][2] = {{0,1},{0,2},{0,5},{1,3},{1,5},{2,3},{2,4},{3,4} ,{0,3},{1,2}};
 
-    //     entity_add(ent);
-    // }
-
-    i32 points[6][2] = {{0,0},{2,0},{0,-2},{2,-2},{1,-3},{1,1}};
-    u32 connections[10][2] = {{0,1},{0,2},{0,5},{1,3},{1,5},{2,3},{2,4},{3,4} ,{0,3},{1,2}};
-
-    Slime slime = slime_create(points, sizeof(points)/sizeof(points[0]), connections, sizeof(connections)/sizeof(connections[0]), 50, 0.5);
-    Entity sl;
-    sl.type = SlimeType;
-    sl.u.slimeEntity = slime;
-    entity_add(sl);
+    // Slime slime = slime_create(points, sizeof(points)/sizeof(points[0]), connections, sizeof(connections)/sizeof(connections[0]), 50, 0.5);
+    // Entity sl;
+    // sl.type = SlimeType;
+    // sl.u.slimeEntity = slime;
+    // entity_add(sl);
 }
 
 void entity_periodic(){
@@ -50,8 +37,8 @@ void entity_periodic(){
     }
 }
 
-Node* entity_add(Entity ent){
-    Node* addedEntity = linkedlist_append(entity_list, &ent);
+Node* entity_add(Entity* ent){
+    Node* addedEntity = linkedlist_append(entity_list, ent);
     return addedEntity;
 }
 
