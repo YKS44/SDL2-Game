@@ -54,6 +54,8 @@ void slime_update(Slime* slime){
 
         vel.y += gravity;
 
+        vel = vec2_mult(vel, TIME.deltaTime);
+
         point->prevPoint = point->point;
         point->point = vec2_add(point->point, vel);
 
@@ -74,6 +76,7 @@ void slime_update(Slime* slime){
         f32 dist = hypot(p2->point.x-p1->point.x, p2->point.y-p1->point.y);
 
         Vec2 vel = vec2_mult(dir, (line.length-dist)/2 * slime->elasticity);
+        vel = vec2_mult(vel, TIME.deltaTime);
         
         p1->point = vec2_add(p1->point,vel);
         p2->point = vec2_sub(p2->point, vel);

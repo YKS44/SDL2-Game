@@ -9,14 +9,14 @@ LinkedList* entity_list = NULL;
 void entity_init(){
     entity_list = linkedlist_create(sizeof(Entity));
 
-    // i32 points[6][2] = {{0,0},{2,0},{0,-2},{2,-2},{1,-3},{1,1}};
-    // u32 connections[10][2] = {{0,1},{0,2},{0,5},{1,3},{1,5},{2,3},{2,4},{3,4} ,{0,3},{1,2}};
+    i32 points[6][2] = {{0,0},{2,0},{0,-2},{2,-2},{1,-3},{1,1}};
+    u32 connections[10][2] = {{0,1},{0,2},{0,5},{1,3},{1,5},{2,3},{2,4},{3,4} ,{0,3},{1,2}};
 
-    // Slime slime = slime_create(points, sizeof(points)/sizeof(points[0]), connections, sizeof(connections)/sizeof(connections[0]), 50, 0.5);
-    // Entity sl;
-    // sl.type = SlimeType;
-    // sl.u.slimeEntity = slime;
-    // entity_add(sl);
+    Slime slime = slime_create(points, sizeof(points)/sizeof(points[0]), connections, sizeof(connections)/sizeof(connections[0]), 50, 0.5);
+    Entity sl;
+    sl.type = SlimeType;
+    sl.u.slimeEntity = slime;
+    entity_add(&sl);
 }
 
 void entity_periodic(){

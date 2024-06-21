@@ -40,19 +40,21 @@ int main()
                 case SDL_QUIT:
                     run = false;
                     break;
+
                 case SDL_KEYDOWN:
                     keycode = event.key.keysym.sym;
 
                     if(keycode < 322){ //for some reason keysym.sym also detects modifer keys, but their numbers are really big, so only update when you know its not a mod key.
                         if(!KEYS[keycode].held){ //cuz if you keep holding down your keyboard, mac book detects it as pressing it multiple times
                             KEYS[keycode].pressed = true;
+                            KEYS[keycode].held = true;
+                            arraylist_append(instantKey, &keycode);
                         }
-                        KEYS[keycode].held = true;
-                        arraylist_append(instantKey, &keycode);
                     }else{//only pressed some modifer key
                         keymod = event.key.keysym.mod; 
                     }           
                     break;
+
                 case SDL_KEYUP:
                     keycode = event.key.keysym.sym;
                     
@@ -63,6 +65,17 @@ int main()
                     }else{
                         keymod = KMOD_NONE;
                     }
+                    break;
+
+                case SDL_MOUSEBUTTONDOWN:
+                    u32 button = event.button.button + 321; //SDL mouse button id is 1, 2, 3 = left, mid, right. But mine is 322, 323, 324. So add 321.
+
+                    if(!KEYS[button].held){
+                        KEYS[button].pressed = true;
+                        KEYS[button].held = true;
+                        
+                    }
+
                     break;
             }
         }
@@ -96,7 +109,9 @@ int main()
 
 
         time_periodic();
+
         // test_periodic();
+
         entity_periodic();
         render_periodic();
 
@@ -129,9 +144,9 @@ void test_init(){
     Entity w1 = (Entity) {.type = RectType, .u.rectEntity = wall1};
     Entity w2 = (Entity) {.type = RectType, .u.rectEntity = wall2};
 
-    // entity_add(p);
-    // entity_add(w1);
-    // entity_add(w2);
+    entity_add(&p);
+    entity_add(&w1);
+    entity_add(&w2);
 }
 
 void test_periodic(){

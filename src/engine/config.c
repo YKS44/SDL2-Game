@@ -11,4 +11,4 @@ const char screen_title[] = "Title";
 const u32 frame_rate = 100;
 
 //physics
-const i32 gravity = -3;
+const i32 gravity = -100;

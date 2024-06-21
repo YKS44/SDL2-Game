@@ -1,6 +1,6 @@
 #include "../keyboard.h"
 
-Key KEYS[322];
+Key KEYS[322 + 3]; //+3 is the three mouse buttons. left, middle, right clicks
 ArrayList* instantKey;
 SDL_Keymod keymod;
 
