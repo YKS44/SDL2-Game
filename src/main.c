@@ -35,6 +35,7 @@ int main()
 
         SDL_Event event;
         SDL_Keycode keycode;
+        u32 button;
         while(SDL_PollEvent(&event)){
             switch(event.type){
                 case SDL_QUIT:
@@ -68,7 +69,7 @@ int main()
                     break;
 
                 case SDL_MOUSEBUTTONDOWN:
-                    u32 button = event.button.button + 321; //SDL mouse button id is 1, 2, 3 = left, mid, right. But mine is 322, 323, 324. So add 321.
+                    button = event.button.button + 321; //SDL mouse button id is 1, 2, 3 = left, mid, right. But mine is 322, 323, 324. So add 321.
 
                     if(!KEYS[button].held){
                         KEYS[button].pressed = true;

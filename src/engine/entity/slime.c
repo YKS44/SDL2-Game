@@ -56,6 +56,11 @@ void slime_update(Slime* slime){
 
         vel = vec2_mult(vel, TIME.deltaTime);
 
+        if(i == 0){
+            printf("%f\n", vel.y);
+
+        }
+
         point->prevPoint = point->point;
         point->point = vec2_add(point->point, vel);
 
