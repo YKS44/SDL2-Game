@@ -17,7 +17,7 @@ Slime slime_create(i32 pts[][2], usize numPts, u32 connections[][2], usize numCo
         Point point;
 
         point.point.x = pts[i][0] * scale;
-        point.point.y = pts[i][1] * scale+500; //TODO remove +500
+        point.point.y = pts[i][1] * scale+1000; //TODO remove +500
 
         point.prevPoint.x = point.point.x;
         point.prevPoint.y = point.point.y;
@@ -57,10 +57,10 @@ void slime_update(Slime* slime){
         vel = vec2_mult(vel, TIME.deltaTime);
 
         if(i == 0){
-            printf("%f\n", vel.y);
+            // printf("%f\n", vel.y);
+            // printf("%f\n", TIME.deltaTime);
 
         }
-
         point->prevPoint = point->point;
         point->point = vec2_add(point->point, vel);
 

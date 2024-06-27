@@ -74,10 +74,16 @@ int main()
                     if(!KEYS[button].held){
                         KEYS[button].pressed = true;
                         KEYS[button].held = true;
-                        
+                        arraylist_append(instantKey, &button);
                     }
-
                     break;
+
+                case SDL_MOUSEBUTTONUP:
+                    button = event.button.button + 321;
+
+                    KEYS[button].held = false;
+                    KEYS[button].released = true;
+                    arraylist_append(instantKey, &button);
             }
         }
         SDL_SetRenderDrawColor(global.rendering.renderer, 0, 0, 0, 255);
