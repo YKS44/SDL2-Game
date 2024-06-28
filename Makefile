@@ -15,7 +15,7 @@
 # Compiler and compiler flags
 CC := gcc
 CFLAGS := -Wall -Iinclude
-LDFLAGS := -L/opt/homebrew/Cellar/sdl2/2.30.2/lib/ -L/opt/homebrew/Cellar/sdl2_image/2.8.2_1/lib
+LDFLAGS := -L/opt/homebrew/Cellar/sdl2/2.30.4/lib/ -L/opt/homebrew/Cellar/sdl2_image/2.8.2_1/lib
 LDLIBS := -lSDL2_image -lSDL2
 
 # Directories
