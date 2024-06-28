@@ -13,11 +13,10 @@ void time_init(){
 
 void time_periodic(){
     TIME.now = SDL_GetTicks64();
-
     if(TIME.now == TIME.prev){ //if the previous time and current time is the same because SDL2 is bad, then just skip calculating the deltatime for this frame.
-        TIME.prev = TIME.now;
         return;
     }
     TIME.deltaTime = (f32)(TIME.now - TIME.prev) * MS_TO_SEC; //convert to seconds
     TIME.prev = TIME.now;
+
 }

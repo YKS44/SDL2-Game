@@ -6,6 +6,7 @@
 #include "../render.h"
 #include "../config.h"
 #include "../global.h"
+#include "../keyboard.h"
 
 Slime slime_create(i32 pts[][2], usize numPts, u32 connections[][2], usize numCon, i32 scale, f32 elasticity){
     Slime slime;
@@ -47,31 +48,39 @@ Slime slime_create(i32 pts[][2], usize numPts, u32 connections[][2], usize numCo
 }
 
 void slime_update(Slime* slime){
+
     for(int i = 0; i < slime->points->len; i++){
         Point* point = (Point*)arraylist_get(slime->points,i);
         
+        if(i == 5 && KEYS[LEFT_MOUSE].held){
+            point->point.x = global.mouseX;
+            point->point.y = global.mouseY;
+            point->prevPoint = point->point;
+            continue;
+        }
         Vec2 vel = vec2_sub(point->point,point->prevPoint);
 
-        vel.y += gravity;
-
-        vel = vec2_mult(vel, TIME.deltaTime);
+        vel.y += -1;
 
         if(i == 0){
-            // printf("%f\n", vel.y);
+            printf("%f\n", vel.y);
             // printf("%f\n", TIME.deltaTime);
 
         }
+
+        // if(point->point.y < 0){
+        //     vel.y = -point->point.y;
+        // }
+
         point->prevPoint = point->point;
         point->point = vec2_add(point->point, vel);
-
-        if(point->point.y < 0){
-            point->point.y = 0;
-            point->prevPoint = point->point;
-        }
-
     }
 
     for(int i = 0; i < slime->lines->len; i++){
+        if(i == 5 && KEYS[LEFT_MOUSE].held){
+            continue;
+        }
+
         Line line = *((Line*)arraylist_get(slime->lines,i));
         Point* p1 = (Point*)arraylist_get(slime->points, line.idx1);
         Point* p2 = (Point*)arraylist_get(slime->points, line.idx2);

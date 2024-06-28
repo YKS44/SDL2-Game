@@ -20,6 +20,7 @@ void entity_init(){
 }
 
 void entity_periodic(){
+    printf("%u\n",entity_list->len);
     Node* cur = entity_list->head;
     for(int i = 0; i < entity_list->len; i++){
         Entity* ent = (Entity*) cur->item;

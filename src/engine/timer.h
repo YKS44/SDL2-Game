@@ -5,6 +5,7 @@
 #define TIME global.timeState
 
 typedef struct{
+    //Time elapsed since the last frame, in seconds.
     f32 deltaTime;
 
     u64 now;
